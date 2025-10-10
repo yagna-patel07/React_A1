@@ -8,6 +8,8 @@ import { stranger_tune } from './tunes';
 
 let globalEditor = null;
 
+
+
 export function SetupButtons() {
 
   document.getElementById('play').addEventListener('click', () => globalEditor.evaluate());
@@ -17,10 +19,19 @@ export function SetupButtons() {
   }
   )
   document.getElementById('process_play').addEventListener('click', () => {
-    Proc();
-    globalEditor.evaluate();
+    ProcAndPlay();
   }
   )
+}
+
+
+
+export function ProcAndPlay() {
+  if (globalEditor != null && globalEditor.repl.state.started == true) {
+    console.log(globalEditor)
+    Proc()
+    globalEditor.evaluate();
+  }
 }
 
 export function Proc() {
@@ -106,13 +117,13 @@ export default function StrudelDemo() {
             </div>
             <div className="col-md-4">
               <div className="form-check">
-                <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" defaultChecked />
+                <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" onChange={ProcAndPlay} defaultChecked />
                 <label className="form-check-label" for="flexRadioDefault1">
                   p1: ON
                 </label>
               </div>
               <div className="form-check">
-                <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" />
+                <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" onChange={ProcAndPlay} />
                 <label className="form-check-label" for="flexRadioDefault2">
                   p1: HUSH
                 </label>
