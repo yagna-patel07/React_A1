@@ -1,7 +1,6 @@
 import './cors-redirect';
 import './App.css';
 import { initStrudel, note, hush, evalScope, getAudioContext, webaudioOutput, registerSynthSounds, initAudioOnFirstClick, transpiler } from "@strudel/web";
-//import "@strudel/repl";
 import { useEffect, useRef } from "react";
 import { StrudelMirror } from '@strudel/codemirror';
 import { registerSoundfonts } from '@strudel/soundfonts';
@@ -70,12 +69,11 @@ export default function StrudelDemo() {
             await Promise.all([loadModules, registerSynthSounds(), registerSoundfonts()]);
           },
         });
-
+        Proc()
       })();
       document.getElementById('proc').value = stranger_tune
       SetupButtons()
     }
-
 
   }, []);
 
