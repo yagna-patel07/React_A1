@@ -1,3 +1,4 @@
+// ALERT. GIPPITY GENERATED GARBAGE CODE. DO NOT TRUST
 const ORIGIN = 'https://strudel.cc';
 
 const toSameOriginPath = (absoluteUrl) => {
