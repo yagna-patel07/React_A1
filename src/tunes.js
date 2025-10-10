@@ -1,6 +1,6 @@
 export const stranger_tune = `setcps(0.7);
 
-p1: n("0 2 4 6 7 6 4 2")
+<p1_Radio>p1: n("0 2 4 6 7 6 4 2")
   .scale("<c3:major>/2")
   .s("supersaw")
   .distort(0.7)

@@ -5,15 +5,41 @@ import { initStrudel, note, hush, evalScope, getAudioContext, webaudioOutput, re
 import { useEffect, useRef } from "react";
 import { StrudelMirror } from '@strudel/codemirror';
 import { registerSoundfonts } from '@strudel/soundfonts';
-import { drawPianoroll } from '@strudel/draw';
 import { stranger_tune } from './tunes';
 
 let globalEditor = null;
 
-export function Test() {
+export function SetupButtons() {
 
   document.getElementById('play').addEventListener('click', () => globalEditor.evaluate());
   document.getElementById('stop').addEventListener('click', () => globalEditor.stop());
+  document.getElementById('process').addEventListener('click', () => {
+    Proc()
+  }
+  )
+  document.getElementById('process_play').addEventListener('click', () => {
+    Proc();
+    globalEditor.evaluate();
+  }
+  )
+}
+
+export function Proc() {
+
+  let proc_text = document.getElementById('proc').value
+  let proc_text_replaced = proc_text.replaceAll('<p1_Radio>', ProcessText);
+  ProcessText(proc_text);
+  globalEditor.setCode(proc_text_replaced)
+}
+
+export function ProcessText(match, ...args) {
+
+  let replace = ""
+  if (document.getElementById('flexRadioDefault2').checked) {
+    replace = "_"
+  }
+
+  return replace
 }
 
 export default function StrudelDemo() {
@@ -32,7 +58,6 @@ export default function StrudelDemo() {
           getTime: () => getAudioContext().currentTime,
           transpiler,
           root: document.getElementById('editor'),
-          initialCode: stranger_tune,
           prebake: async () => {
             initAudioOnFirstClick(); // needed to make the browser happy (don't await this here..)
             const loadModules = evalScope(
@@ -47,7 +72,8 @@ export default function StrudelDemo() {
         });
 
       })();
-      Test()
+      document.getElementById('proc').value = stranger_tune
+      SetupButtons()
     }
 
 
@@ -63,7 +89,7 @@ export default function StrudelDemo() {
           <div className="row">
             <div className="col-md-8" style={{ maxHeight: '50vh', overflowY: 'auto' }}>
               <label for="exampleFormControlTextarea1" className="form-label">Text to preprocess:</label>
-              <textarea className="form-control" id="preprocess" rows="3"></textarea>
+              <textarea className="form-control" rows="15" id="proc" ></textarea>
             </div>
             <div className="col-md-4">
 
