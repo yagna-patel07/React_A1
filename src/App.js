@@ -100,7 +100,7 @@ export default function StrudelDemo() {
         <div className="container-fluid">
           <div className="row">
             <div className="col-md-8" style={{ maxHeight: '50vh', overflowY: 'auto' }}>
-              <label for="exampleFormControlTextarea1" className="form-label">Text to preprocess:</label>
+              <label htmlFor="exampleFormControlTextarea1" className="form-label">Text to preprocess:</label>
               <textarea className="form-control" rows="15" id="proc" ></textarea>
             </div>
             <div className="col-md-4">
@@ -121,13 +121,13 @@ export default function StrudelDemo() {
             <div className="col-md-4">
               <div className="form-check">
                 <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" onChange={ProcAndPlay} defaultChecked />
-                <label className="form-check-label" for="flexRadioDefault1">
+                <label className="form-check-label" htmlFor="flexRadioDefault1">
                   p1: ON
                 </label>
               </div>
               <div className="form-check">
                 <input className="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" onChange={ProcAndPlay} />
-                <label className="form-check-label" for="flexRadioDefault2">
+                <label className="form-check-label" htmlFor="flexRadioDefault2">
                   p1: HUSH
                 </label>
               </div>
