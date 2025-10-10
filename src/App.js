@@ -19,7 +19,10 @@ export function SetupButtons() {
   }
   )
   document.getElementById('process_play').addEventListener('click', () => {
-    ProcAndPlay();
+    if (globalEditor != null) {
+      Proc()
+      globalEditor.evaluate()
+    }
   }
   )
 }
