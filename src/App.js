@@ -1,8 +1,11 @@
-import './cors-redirect';
 import './App.css';
-import { initStrudel, note, hush, evalScope, getAudioContext, webaudioOutput, registerSynthSounds, initAudioOnFirstClick, transpiler } from "@strudel/web";
 import { useEffect, useRef } from "react";
 import { StrudelMirror } from '@strudel/codemirror';
+import { evalScope } from '@strudel/core';
+import { drawPianoroll } from '@strudel/draw';
+import { initAudioOnFirstClick } from '@strudel/webaudio';
+import { transpiler } from '@strudel/transpiler';
+import { getAudioContext, webaudioOutput, registerSynthSounds } from '@strudel/webaudio';
 import { registerSoundfonts } from '@strudel/soundfonts';
 import { stranger_tune } from './tunes';
 import console_monkey_patch, { getD3Data } from './console-monkey-patch';
@@ -12,7 +15,6 @@ let globalEditor = null;
 const handleD3Data = (event) => {
     console.log(event.detail);
 };
-
 
 export function SetupButtons() {
 
@@ -69,13 +71,20 @@ useEffect(() => {
         document.addEventListener("d3Data", handleD3Data);
         console_monkey_patch();
         hasRun.current = true;
-        (async () => {
-            await initStrudel();
+        //Code copied from example: https://codeberg.org/uzu/strudel/src/branch/main/examples/codemirror-repl
+            //init canvas
+            const canvas = document.getElementById('roll');
+            canvas.width = canvas.width * 2;
+            canvas.height = canvas.height * 2;
+            const drawContext = canvas.getContext('2d');
+            const drawTime = [-2, 2]; // time window of drawn haps
             globalEditor = new StrudelMirror({
                 defaultOutput: webaudioOutput,
                 getTime: () => getAudioContext().currentTime,
                 transpiler,
                 root: document.getElementById('editor'),
+                drawTime,
+                onDraw: (haps, time) => drawPianoroll({ haps, time, ctx: drawContext, drawTime, fold: 0 }),
                 prebake: async () => {
                     initAudioOnFirstClick(); // needed to make the browser happy (don't await this here..)
                     const loadModules = evalScope(
@@ -88,10 +97,10 @@ useEffect(() => {
                     await Promise.all([loadModules, registerSynthSounds(), registerSoundfonts()]);
                 },
             });
-            Proc()
-        })();
+            
         document.getElementById('proc').value = stranger_tune
         SetupButtons()
+        Proc()
     }
 
 }, []);
@@ -122,6 +131,7 @@ return (
                 <div className="row">
                     <div className="col-md-8" style={{ maxHeight: '50vh', overflowY: 'auto' }}>
                         <div id="editor" />
+                        <div id="output" />
                     </div>
                     <div className="col-md-4">
                         <div className="form-check">
@@ -139,11 +149,10 @@ return (
                     </div>
                 </div>
             </div>
-
+            <canvas id="roll"></canvas>
         </main >
     </div >
 );
 
 
 }
-
