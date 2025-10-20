@@ -2,7 +2,6 @@
   "name": "webtech-assignment2",
   "version": "0.1.0",
   "private": true,
-  "proxy": "https://strudel.cc",
   "dependencies": {
     "@strudel/codemirror": "^1.2.5",
     "@strudel/core": "^1.2.4",
