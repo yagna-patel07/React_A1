@@ -16,56 +16,8 @@ import PreprocessTextArea from './components/PreprocessTextArea';
 import EditorHost from './components/EditorHost';
 import PianoRoll from './components/PianoRoll';
 
-let globalEditor = null;
-
-const handleD3Data = (event) => {
-    console.log(event.detail);
-};
-
-export function SetupButtons() {
-
-    document.getElementById('play').addEventListener('click', () => globalEditor.evaluate());
-    document.getElementById('stop').addEventListener('click', () => globalEditor.stop());
-    document.getElementById('process').addEventListener('click', () => {
-        Proc()
-    }
-    )
-    document.getElementById('process_play').addEventListener('click', () => {
-        if (globalEditor != null) {
-            Proc()
-            globalEditor.evaluate()
-        }
-    }
-    )
-}
-
-
-
-export function ProcAndPlay() {
-    if (globalEditor && globalEditor.repl?.state?.started === true) {
-        console.log(globalEditor)
-        Proc()
-        globalEditor.evaluate();
-    }
-}
-
-export function Proc() {
-
-    let proc_text = document.getElementById('proc').value
-    let proc_text_replaced = proc_text.replaceAll('<p1_Radio>', ProcessText);
-    ProcessText(proc_text);
-    globalEditor.setCode(proc_text_replaced)
-}
-
-export function ProcessText(match, ...args) {
-
-    let replace = ""
-    if (document.getElementById('flexRadioDefault2').checked) {
-        replace = "_"
-    }
-
-    return replace
-}
+import { setEditor } from './lib/editorStore';
+import { handleD3Data, SetupButtons, Proc, ProcAndPlay } from './lib/handlers';
 
 export default function StrudelDemo() {
 
@@ -84,7 +36,7 @@ useEffect(() => {
             canvas.height = canvas.height * 2;
             const drawContext = canvas.getContext('2d');
             const drawTime = [-2, 2]; // time window of drawn haps
-            globalEditor = new StrudelMirror({
+            const editor = new StrudelMirror({
                 defaultOutput: webaudioOutput,
                 getTime: () => getAudioContext().currentTime,
                 transpiler,
@@ -104,10 +56,13 @@ useEffect(() => {
                 },
             });
             
-        document.getElementById('proc').value = stranger_tune
-        SetupButtons()
-        Proc()
+        setEditor(editor);
+        document.getElementById('proc').value = stranger_tune;
+        SetupButtons();
+        Proc();
     }
+
+    return () => document.removeEventListener("d3Data", handleD3Data);
 
 }, []);
 
@@ -136,7 +91,7 @@ return (
                         <EditorHost/>
                     </div>
                     <div className="col-md-4">
-                       <DJControls/>
+                        <DJControls ProcAndPlay={ProcAndPlay} />
                     </div>
                 </div>
             </div>
