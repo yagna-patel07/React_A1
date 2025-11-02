@@ -1,0 +1,19 @@
+// This file allows you to configure ESLint according to your project's needs, so that you
+// can control the strictness of the linter, the plugins to use, and more.
+
+// For more information about configuring ESLint, visit https://eslint.org/docs/user-guide/configuring/
+
+$primary: #4f46e5;
+$secondary: #64748b;
+$danger: #ef4444;
+$border-radius: 1rem;
+$enable-shadows: true;
+$body-bg: #f8fafc;
+$body-color: #0f172a;
+
+@import "~bootstrap/scss/bootstrap";
+
+.panel {
+    @extend .card;
+    @extend .shadow-sm;
+}

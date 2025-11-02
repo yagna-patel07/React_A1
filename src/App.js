@@ -37,7 +37,7 @@ export default function StrudelDemo() {
     useEffect(() => {
         if (hasRun.current) return;
         hasRun.current = true;
-        //document.addEventListener("d3Data", handleD3Data);
+  
         console_monkey_patch();
         //Code copied from example: https://codeberg.org/uzu/strudel/src/branch/main/examples/codemirror-repl
         //init canvas
@@ -67,7 +67,7 @@ export default function StrudelDemo() {
         });
 
         setEditor(editor);
-        editor.setCode(songText);
+        editor.setCode(stranger_tune);
     }, []);
 
     useEffect(() => {
@@ -89,7 +89,8 @@ export default function StrudelDemo() {
                         <div className="col-md-4">
 
                             <nav>
-                                <ProcButtons/>
+                                <ProcButtons onProc={() => { /* TODO: preprocess */ }}
+                                    onProcPlay={() => { /* TODO: preprocess + play */ }} />
                                 <br />
                                 <PlayButtons onPlay={handlePlay} onStop={handleStop} />
                             </nav>

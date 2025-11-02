@@ -1,9 +1,10 @@
+import { ButtonGroup, Button } from 'react-bootstrap';
 function PlayButtons({ onPlay, onStop }) {
     return (
-        <nav className="btn-group" role="group" aria-label="Transport controls">
-            <button id="play" className="btn btn-outline-primary" onClick={onPlay}>Play</button>
-            <button id="stop" className="btn btn-outline-primary" onClick={onStop}>Stop</button>
-        </nav>
+        <ButtonGroup className="mb-3">
+            <Button variant="primary" onClick={onPlay}>Play</Button>
+            <Button variant="danger" onClick={onStop}>Stop</Button>
+        </ButtonGroup>
     )
 }
 export default PlayButtons;

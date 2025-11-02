@@ -1,45 +1,53 @@
 import { Card, Form, InputGroup } from "react-bootstrap";
 
-export default function MixerPanel({
-    cpm, onCpm,               
-    volume, onVolume,         
-    toggles, onToggle        
-}) {
+export default function MixerPanel({cpm, onCpm, volume, onVolume, toggles, onToggle}) {
     return (
-        <Card className="mb-3">
+        <Card className="panel">
             <Card.Body>
-                <Card.Title className="h6 mb-3">Mixer</Card.Title>
+                <Card.Title>Mixer</Card.Title>
 
-                {/* CPM */}
-                <Form.Group className="mb-3" controlId="cpmInput">
+                <Form>
                     <Form.Label>Cycles per minute (CPM)</Form.Label>
-                    <InputGroup>
+                    <InputGroup className="mb-3">
                         <InputGroup.Text>CPM</InputGroup.Text>
                         <Form.Control
-                            type="number" min={10} max={480} step={1}
-                            value={cpm} onChange={e => onCpm(Number(e.target.value || 0))}
+                            type="number"
+                            min={1}
+                            max={300}
+                            value={cpm}
+                            onChange={(e) => onCpm(Number(e.target.value) || 0)}
+                            aria-label="Cycles per minute"
                         />
                     </InputGroup>
-                </Form.Group>
 
-                {/* Volume */}
-                <Form.Group className="mb-3" controlId="volumeRange">
                     <Form.Label>Master Volume: {volume.toFixed(2)}</Form.Label>
-                    <Form.Range min={0} max={1} step={0.01}
-                        value={volume} onChange={e => onVolume(Number(e.target.value))}
+                    <Form.Range
+                        min={0}
+                        max={1}
+                        step={0.01}
+                        value={volume}
+                        onChange={(e) => onVolume(Number(e.target.value))}
+                        className="mb-3"
                     />
-                </Form.Group>
 
-                {/* Instrument toggles */}
-                <Form.Group>
-                    <Form.Label className="mb-2 d-block">Instruments</Form.Label>
-                    <Form.Check type="checkbox" id="toggleD1" label="D1 (Drums 1)"
-                        checked={toggles.D1} onChange={e => onToggle('D1', e.target.checked)} />
-                    <Form.Check type="checkbox" id="toggleD2" label="D2 (Drums 2)"
-                        checked={toggles.D2} onChange={e => onToggle('D2', e.target.checked)} />
-                    <Form.Check type="checkbox" id="toggleS1" label="S1 (Sample 1)"
-                        checked={toggles.S1} onChange={e => onToggle('S1', e.target.checked)} />
-                </Form.Group>
+                    <Form.Label>Instruments</Form.Label>
+                    <div className="d-flex flex-column gap-1">
+                        {[
+                            { k: 'D1', label: 'D1 (Drums 1)' },
+                            { k: 'D2', label: 'D2 (Drums 2)' },
+                            { k: 'S1', label: 'S1 (Sample 1)' },
+                        ].map(({ k, label }) => (
+                            <Form.Check
+                                key={k}
+                                id={`mix-${k}`}
+                                type="checkbox"
+                                label={label}
+                                checked={!!toggles[k]}
+                                onChange={(e) => onToggle(k, e.target.checked)}
+                            />
+                        ))}
+                    </div>
+                </Form>
             </Card.Body>
         </Card>
     );
