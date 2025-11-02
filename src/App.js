@@ -19,9 +19,17 @@ import PianoRoll from './components/PianoRoll';
 import { setEditor } from './lib/editorStore';
 import { handleD3Data, SetupButtons, Proc, ProcAndPlay } from './lib/handlers';
 
+import { useState } from "react";
+import MixerPanel from './components/MixerPanel';
+
+
 export default function StrudelDemo() {
 
-const hasRun = useRef(false);
+    const hasRun = useRef(false);
+    const [cpm, setCpm] = useState(120);
+    const [volume, setVolume] = useState(1);
+    const [toggles, setToggles] = useState({ D1: true, D2: true, S1: true });
+    const onToggle = (k, v) => setToggles(t => ({ ...t, [k]: v }));
 
 useEffect(() => {
 
@@ -84,6 +92,11 @@ return (
                             <br />
                             <PlayButtons/>
                         </nav>
+                        <MixerPanel
+                            cpm={cpm} onCpm={setCpm}
+                            volume={volume} onVolume={setVolume}
+                            toggles={toggles} onToggle={onToggle}
+                        />
                     </div>
                 </div>
                 <div className="row">
