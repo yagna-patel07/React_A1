@@ -1,8 +1,14 @@
-function PreprocessTextArea() {
+function PreprocessTextArea({ value, onChange }) {
     return (
         <>
-            <label htmlFor="exampleFormControlTextarea1" className="form-label">Text to preprocess:</label>
-            <textarea className="form-control" rows="15" id="proc" ></textarea>
+            <label htmlFor="proc" className="form-label">Text to preprocess:</label>
+            <textarea
+                id="proc"
+                className="form-control"
+                rows="15"
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
+            />
         </>
     )
 }

@@ -1,3 +1,5 @@
+/*
+
 import { getEditor } from "./editorStore";
 
 // console handler
@@ -46,3 +48,5 @@ export function Proc() {
     ProcessText(proc_text);
     ed.setCode(proc_text_replaced);
 }
+
+*/
