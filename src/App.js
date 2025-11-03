@@ -77,12 +77,12 @@ export default function StrudelDemo() {
     }, [songText]);
 
     return (
-        <div>
-            <h2>Strudel Demo</h2>
+        <div data-bs-theme="dark" className="min-vh-100 bg-body">
+            <h2 className="app-title text-center">Strudel</h2>
             <main>
 
                 <div className="container-fluid">
-                    <div className="row">
+                    <div className="row gy-2">
                         <div className="col-md-8" style={{ maxHeight: '50vh', overflowY: 'auto' }}>
                             <PreprocessTextArea value={songText} onChange={setSongText} />
                         </div>
@@ -101,7 +101,7 @@ export default function StrudelDemo() {
                             />
                         </div>
                     </div>
-                    <div className="row">
+                    <div className="row gy-2">
                         <div className="col-md-8" style={{ maxHeight: '50vh', overflowY: 'auto' }}>
                             <EditorHost/>
                         </div>

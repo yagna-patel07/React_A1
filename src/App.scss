@@ -3,17 +3,111 @@
 
 // For more information about configuring ESLint, visit https://eslint.org/docs/user-guide/configuring/
 
-$primary: #4f46e5;
-$secondary: #64748b;
-$danger: #ef4444;
+/* Dark theme */
+
+$primary: #60a5fa; 
+$secondary: #94a3b8; 
+$success: #34d399; 
+$warning: #fbbf24; 
+$info: #38bdf8; 
+$danger: #f87171;
+
 $border-radius: 1rem;
 $enable-shadows: true;
-$body-bg: #f8fafc;
-$body-color: #0f172a;
+
+/* Surfaces & text */
+$body-bg: #0b1220; /* page background */
+$body-color: #e5e7eb; /* default text */
+$card-bg: #0f172a; /* panel background */
+$card-border-color: rgba(255,255,255,.08);
+
+/* Forms */
+$input-bg: #0b1220;
+$input-color: #e5e7eb;
+$input-border-color: rgba(255,255,255,.12);
+$input-placeholder-color: rgba(229,231,235,.5);
+
+$form-range-track-bg: rgba(255,255,255,.12);
+$form-range-thumb-bg: $primary;
 
 @import "~bootstrap/scss/bootstrap";
 
+/* Typography helpers */
+.mono {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+/* App title */
+h2.app-title {
+    margin: 0 0 .75rem;
+    font-weight: 800;
+    font-size: clamp(1.6rem, 1.1rem + 1.6vw, 2.2rem);
+    letter-spacing: .3px;
+    color: #e2e8f0;
+    text-shadow: 0 1px 0 rgba(0,0,0,.35);
+}
+
+/* Compact vertical gutters between rows */
+.row.gy-2 {
+    --bs-gutter-y: .35rem;
+}
+
+/* Panels (cards) */
 .panel {
     @extend .card;
     @extend .shadow-sm;
+    margin-bottom: .5rem;
+}
+
+.panel .card-header {
+    background: #0b1320;
+    color: #cbd5e1;
+    border-bottom: 1px solid rgba(148,163,184,.12);
+    padding: .5rem .75rem;
+}
+
+.panel .card-body {
+    padding: .5rem .75rem;
+}
+
+/* Textarea + form spacing inside the top panel */
+.panel .form-label {
+    margin-bottom: .25rem;
+}
+
+.panel .mb-3 {
+    margin-bottom: .05rem !important;
+}
+
+textarea.form-control {
+    background: #0f172a;
+    color: #e2e8f0;
+    border-color: rgba(148,163,184,.2);
+    min-height: 34vh;
+    margin-bottom: 0;
+}
+
+/* Editor area */
+.editor-pane {
+    height: 38vh;
+    overflow: auto;
+    padding: .5rem;
+}
+
+/* CodeMirror look */
+.cm-editor {
+    margin: 0;
+    border-radius: .75rem;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.05);
+    background: #0a0f1a;
+    color: $body-color;
+}
+
+.cm-scroller {
+    font-family: inherit;
+}
+
+/* Outline primary: readable on hover */
+.btn-outline-primary:hover {
+    color: $body-bg;
 }

@@ -1,4 +1,4 @@
-/*
+
 
 import { getEditor } from "./editorStore";
 
@@ -49,4 +49,3 @@ export function Proc() {
     ed.setCode(proc_text_replaced);
 }
 
-*/
