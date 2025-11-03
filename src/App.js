@@ -1,5 +1,5 @@
-import './App.css';
-import { useEffect, useRef, useState } from "react";
+﻿import './App.css';
+import { useEffect, useRef, useState, useMemo } from "react";
 import { StrudelMirror } from '@strudel/codemirror';
 import { evalScope } from '@strudel/core';
 import { drawPianoroll } from '@strudel/draw';
@@ -7,7 +7,6 @@ import { initAudioOnFirstClick } from '@strudel/webaudio';
 import { transpiler } from '@strudel/transpiler';
 import { getAudioContext, webaudioOutput, registerSynthSounds } from '@strudel/webaudio';
 import { registerSoundfonts } from '@strudel/soundfonts';
-import { stranger_tune } from './tunes';
 import console_monkey_patch from './console-monkey-patch';
 
 import DJControls from './components/DJControls';
@@ -17,7 +16,8 @@ import PreprocessTextArea from './components/PreprocessTextArea';
 import EditorHost from './components/EditorHost';
 import PianoRoll from './components/PianoRoll'
 import MixerPanel from './components/MixerPanel';
-
+import { stranger_tune } from './tunes';
+import { makeTune, stripSetcps } from './lib/cpm';
 import { setEditor, getEditor } from './lib/editorStore';
 //import { handleD3Data, SetupButtons, Proc, ProcAndPlay } from './lib/handlers';
 
@@ -25,8 +25,24 @@ export default function StrudelDemo() {
 
     const hasRun = useRef(false);
 
-    const [songText, setSongText] = useState(stranger_tune);
-    const [cpm, setCpm] = useState(120);
+    // --- state ---
+    const initialCpm = 120;
+    const [cpmText, setCpmText] = useState(String(initialCpm)); 
+    const [body, setBody] = useState(() => stripSetcps(stranger_tune));
+
+    // rebuild the whole code from current CPM text + body
+    const songText = useMemo(() => {
+        const n = parseInt(cpmText, 10);
+        const valid = Number.isFinite(n) && n > 0 ? n : initialCpm;
+        return makeTune(valid, body);
+    }, [cpmText, body]);
+
+    // CPM input change 
+    const handleCpmInput = (raw) => {
+        const onlyDigits = raw.replace(/[^\d]/g, ''); 
+        setCpmText(onlyDigits);
+    };
+
     const [volume, setVolume] = useState(1);
     const [toggles, setToggles] = useState({ D1: true, D2: true, S1: true });
     const onToggle = (k, v) => setToggles(t => ({ ...t, [k]: v }));
@@ -67,14 +83,30 @@ export default function StrudelDemo() {
         });
 
         setEditor(editor);
-        editor.setCode(stranger_tune);
+        editor.setCode(songText);
     }, []);
 
     useEffect(() => {
         const ed = getEditor();
-        if (!ed) return;
-        ed.setCode(songText);
-    }, [songText]);
+        if (!ed)
+            return;
+
+        if (cpmText === '') {           
+            ed.stop();
+            return;
+        }
+
+        const n = parseInt(cpmText, 10);
+        if (!Number.isFinite(n) || n <= 0) {
+            ed.stop();
+            return;
+        }
+
+        const updated = makeTune(n, body);
+        ed.setCode(updated);
+
+        if (ed.repl?.state?.started) ed.evaluate();
+    }, [cpmText, body]);
 
     return (
         <div data-bs-theme="dark" className="min-vh-100 bg-body">
@@ -84,7 +116,7 @@ export default function StrudelDemo() {
                 <div className="container-fluid">
                     <div className="row gy-2">
                         <div className="col-md-8" style={{ maxHeight: '50vh', overflowY: 'auto' }}>
-                            <PreprocessTextArea value={songText} onChange={setSongText} />
+                            <PreprocessTextArea value={body} onChange={setBody} />
                         </div>
                         <div className="col-md-4">
 
@@ -95,7 +127,8 @@ export default function StrudelDemo() {
                                 <PlayButtons onPlay={handlePlay} onStop={handleStop} />
                             </nav>
                             <MixerPanel
-                                cpm={cpm} onCpm={setCpm}
+                                cpmText={cpmText}
+                                onCpmText={handleCpmInput}
                                 volume={volume} onVolume={setVolume}
                                 toggles={toggles} onToggle={onToggle}
                             />

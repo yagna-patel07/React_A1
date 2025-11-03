@@ -1,21 +1,22 @@
 import { Card, Form, InputGroup } from "react-bootstrap";
 
-export default function MixerPanel({cpm, onCpm, volume, onVolume, toggles, onToggle}) {
+export default function MixerPanel({ cpmText, onCpmText, volume, onVolume, toggles, onToggle}) {
     return (
         <Card className="panel">
             <Card.Body>
                 <Card.Title>Mixer</Card.Title>
 
-                <Form>
+                <Form onSubmit={(e) => e.preventDefault()}>
                     <Form.Label>Cycles per minute (CPM)</Form.Label>
                     <InputGroup className="mb-3">
                         <InputGroup.Text>CPM</InputGroup.Text>
                         <Form.Control
-                            type="number"
-                            min={1}
-                            max={300}
-                            value={cpm}
-                            onChange={(e) => onCpm(Number(e.target.value) || 0)}
+                            type="text"                
+                            inputMode="numeric"        
+                            pattern="[0-9]*"
+                            value={cpmText}
+                            onChange={(e) => onCpmText(e.target.value)}
+                            placeholder="e.g. 120"
                             aria-label="Cycles per minute"
                         />
                     </InputGroup>
