@@ -27,15 +27,15 @@ export default function StrudelDemo() {
 
     // --- state ---
     const initialCpm = 120;
-    const [cpmText, setCpmText] = useState(String(initialCpm)); 
+    const [cpmText, setCpmText] = useState(String(initialCpm));  
+    const [volume, setVolume] = useState(1); 
     const [body, setBody] = useState(() => stripSetcps(stranger_tune));
 
-    // rebuild the whole code from current CPM text + body
     const songText = useMemo(() => {
         const n = parseInt(cpmText, 10);
-        const valid = Number.isFinite(n) && n > 0 ? n : initialCpm;
-        return makeTune(valid, body);
-    }, [cpmText, body]);
+        const cpm = Number.isFinite(n) && n > 0 ? n : 120;
+        return makeTune(cpm, volume, body);    
+    }, [cpmText, volume, body]);
 
     // CPM input change 
     const handleCpmInput = (raw) => {
@@ -43,7 +43,6 @@ export default function StrudelDemo() {
         setCpmText(onlyDigits);
     };
 
-    const [volume, setVolume] = useState(1);
     const [toggles, setToggles] = useState({ D1: true, D2: true, S1: true });
     const onToggle = (k, v) => setToggles(t => ({ ...t, [k]: v }));
 
@@ -84,7 +83,7 @@ export default function StrudelDemo() {
 
         setEditor(editor);
         editor.setCode(songText);
-    }, []);
+    }, [songText]);
 
     useEffect(() => {
         const ed = getEditor();
@@ -102,11 +101,11 @@ export default function StrudelDemo() {
             return;
         }
 
-        const updated = makeTune(n, body);
+        const updated = makeTune(n,volume, body);
         ed.setCode(updated);
 
         if (ed.repl?.state?.started) ed.evaluate();
-    }, [cpmText, body]);
+    }, [cpmText,volume, body]);
 
     return (
         <div data-bs-theme="dark" className="min-vh-100 bg-body">

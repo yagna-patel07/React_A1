@@ -28,7 +28,7 @@ export default function MixerPanel({ cpmText, onCpmText, volume, onVolume, toggl
                         step={0.01}
                         value={volume}
                         onChange={(e) => onVolume(Number(e.target.value))}
-                        className="mb-3"
+                        className="form-range"
                     />
 
                     <Form.Label>Instruments</Form.Label>

@@ -3,16 +3,8 @@
   "WorkspaceRootPath": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|c:\\users\\hp\\onedrive\\desktop\\web tech\\react_a1\\src\\tunes.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|solutionrelative:src\\tunes.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|c:\\users\\hp\\onedrive\\desktop\\web tech\\react_a1\\src\\lib\\cpm.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|solutionrelative:src\\lib\\cpm.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|c:\\users\\hp\\onedrive\\desktop\\web tech\\react_a1\\src\\components\\procbuttons.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|solutionrelative:src\\components\\procbuttons.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|c:\\users\\hp\\onedrive\\desktop\\web tech\\react_a1\\src\\components\\mixerpanel.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
@@ -23,12 +15,36 @@
       "RelativeMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|solutionrelative:src\\app.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|c:\\users\\hp\\onedrive\\desktop\\web tech\\react_a1\\src\\app.scss||{181FE41B-5A5D-479F-9F8F-BF665F4EBC2A}",
-      "RelativeMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|solutionrelative:src\\app.scss||{181FE41B-5A5D-479F-9F8F-BF665F4EBC2A}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|c:\\users\\hp\\onedrive\\desktop\\web tech\\react_a1\\src\\lib\\handlers.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|solutionrelative:src\\lib\\handlers.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|c:\\users\\hp\\onedrive\\desktop\\web tech\\react_a1\\src\\tunes.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|solutionrelative:src\\tunes.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|c:\\users\\hp\\onedrive\\desktop\\web tech\\react_a1\\src\\index.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|solutionrelative:src\\index.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|c:\\users\\hp\\onedrive\\desktop\\web tech\\react_a1\\src\\index.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|solutionrelative:src\\index.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|c:\\users\\hp\\onedrive\\desktop\\web tech\\react_a1\\src\\reportwebvitals.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|solutionrelative:src\\reportwebvitals.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|c:\\users\\hp\\onedrive\\desktop\\web tech\\react_a1\\src\\setuptests.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|solutionrelative:src\\setuptests.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|c:\\users\\hp\\onedrive\\desktop\\web tech\\react_a1\\src\\components\\procbuttons.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|solutionrelative:src\\components\\procbuttons.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|c:\\users\\hp\\onedrive\\desktop\\web tech\\react_a1\\src\\app.scss||{181FE41B-5A5D-479F-9F8F-BF665F4EBC2A}",
+      "RelativeMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|solutionrelative:src\\app.scss||{181FE41B-5A5D-479F-9F8F-BF665F4EBC2A}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|c:\\users\\hp\\onedrive\\desktop\\web tech\\react_a1\\src\\components\\preprocesstextarea.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
@@ -55,18 +71,6 @@
       "RelativeMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|solutionrelative:src\\lib\\editorstore.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|c:\\users\\hp\\onedrive\\desktop\\web tech\\react_a1\\src\\index.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|solutionrelative:src\\index.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|c:\\users\\hp\\onedrive\\desktop\\web tech\\react_a1\\src\\setuptests.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|solutionrelative:src\\setuptests.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|c:\\users\\hp\\onedrive\\desktop\\web tech\\react_a1\\src\\reportwebvitals.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|solutionrelative:src\\reportwebvitals.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|c:\\users\\hp\\onedrive\\desktop\\web tech\\react_a1\\src\\console-monkey-patch.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{1C538C04-AF09-44AC-9272-6DDEAA808F25}|ReactAssignment.esproj|solutionrelative:src\\console-monkey-patch.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     }
@@ -78,98 +82,37 @@
       "DocumentGroups": [
         {
           "DockedHeight": 285,
-          "SelectedChildIndex": 9,
+          "SelectedChildIndex": 8,
           "Children": [
             {
               "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "index.css",
+              "DocumentMoniker": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\index.css",
+              "RelativeDocumentMoniker": "src\\index.css",
+              "ToolTip": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\index.css",
+              "RelativeToolTip": "src\\index.css",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-11-03T09:57:01.369Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "cpm.js",
-              "DocumentMoniker": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\lib\\cpm.js",
-              "RelativeDocumentMoniker": "src\\lib\\cpm.js",
-              "ToolTip": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\lib\\cpm.js",
-              "RelativeToolTip": "src\\lib\\cpm.js",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAD0AAABDAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-11-03T07:21:41.361Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "App.js",
-              "DocumentMoniker": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\App.js",
-              "RelativeDocumentMoniker": "src\\App.js",
-              "ToolTip": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\App.js",
-              "RelativeToolTip": "src\\App.js",
-              "ViewState": "AgIAAGMAAAAAAAAAAAAQwCoAAAAjAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-10-30T01:01:40.945Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "EditorHost.js",
-              "DocumentMoniker": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\components\\EditorHost.js",
-              "RelativeDocumentMoniker": "src\\components\\EditorHost.js",
-              "ToolTip": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\components\\EditorHost.js",
-              "RelativeToolTip": "src\\components\\EditorHost.js",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAaAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-10-31T05:11:43.136Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "handlers.js",
-              "DocumentMoniker": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\lib\\handlers.js",
-              "RelativeDocumentMoniker": "src\\lib\\handlers.js",
-              "ToolTip": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\lib\\handlers.js",
-              "RelativeToolTip": "src\\lib\\handlers.js",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-11-01T05:27:19.513Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "DJControls.js",
-              "DocumentMoniker": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\components\\DJControls.js",
-              "RelativeDocumentMoniker": "src\\components\\DJControls.js",
-              "ToolTip": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\components\\DJControls.js",
-              "RelativeToolTip": "src\\components\\DJControls.js",
-              "ViewState": "AgIAAAUAAAAAAAAAAAAAwBYAAAAPAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-10-31T03:59:41.849Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "PreprocessTextArea.js",
-              "DocumentMoniker": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\components\\PreprocessTextArea.js",
-              "RelativeDocumentMoniker": "src\\components\\PreprocessTextArea.js",
-              "ToolTip": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\components\\PreprocessTextArea.js",
-              "RelativeToolTip": "src\\components\\PreprocessTextArea.js",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAPAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-10-31T04:37:10.506Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
               "Title": "MixerPanel.js",
               "DocumentMoniker": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\components\\MixerPanel.js",
               "RelativeDocumentMoniker": "src\\components\\MixerPanel.js",
               "ToolTip": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\components\\MixerPanel.js",
               "RelativeToolTip": "src\\components\\MixerPanel.js",
-              "ViewState": "AgIAACkAAAAAAAAAAAAAwA0AAAApAAAAAAAAAA==",
+              "ViewState": "AgIAABEAAAAAAAAAAAAAwB0AAABKAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2025-11-02T01:06:38.212Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 9,
               "Title": "ProcButtons.js",
               "DocumentMoniker": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\components\\ProcButtons.js",
               "RelativeDocumentMoniker": "src\\components\\ProcButtons.js",
@@ -177,12 +120,11 @@
               "RelativeToolTip": "src\\components\\ProcButtons.js",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-10-31T04:33:48.148Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-31T04:33:48.148Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 10,
               "Title": "App.scss",
               "DocumentMoniker": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\App.scss",
               "RelativeDocumentMoniker": "src\\App.scss",
@@ -194,20 +136,134 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
               "Title": "tunes.js",
               "DocumentMoniker": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\tunes.js",
               "RelativeDocumentMoniker": "src\\tunes.js",
               "ToolTip": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\tunes.js",
               "RelativeToolTip": "src\\tunes.js",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2025-10-31T05:03:07.994Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 8,
+              "Title": "setupTests.js",
+              "DocumentMoniker": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\setupTests.js",
+              "RelativeDocumentMoniker": "src\\setupTests.js",
+              "ToolTip": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\setupTests.js",
+              "RelativeToolTip": "src\\setupTests.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-10-31T05:03:06.864Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "reportWebVitals.js",
+              "DocumentMoniker": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\reportWebVitals.js",
+              "RelativeDocumentMoniker": "src\\reportWebVitals.js",
+              "ToolTip": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\reportWebVitals.js",
+              "RelativeToolTip": "src\\reportWebVitals.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-10-31T05:03:05.201Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "App.js",
+              "DocumentMoniker": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\App.js",
+              "RelativeDocumentMoniker": "src\\App.js",
+              "ToolTip": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\App.js",
+              "RelativeToolTip": "src\\App.js",
+              "ViewState": "AgIAAH0AAAAAAAAAAAAAwAMAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-10-30T01:01:40.945Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "cpm.js",
+              "DocumentMoniker": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\lib\\cpm.js",
+              "RelativeDocumentMoniker": "src\\lib\\cpm.js",
+              "ToolTip": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\lib\\cpm.js",
+              "RelativeToolTip": "src\\lib\\cpm.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-11-03T07:21:41.361Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "handlers.js",
+              "DocumentMoniker": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\lib\\handlers.js",
+              "RelativeDocumentMoniker": "src\\lib\\handlers.js",
+              "ToolTip": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\lib\\handlers.js",
+              "RelativeToolTip": "src\\lib\\handlers.js",
+              "ViewState": "AgIAACcAAAAAAAAAAAAAAAAAAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-11-01T05:27:19.513Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "PreprocessTextArea.js",
+              "DocumentMoniker": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\components\\PreprocessTextArea.js",
+              "RelativeDocumentMoniker": "src\\components\\PreprocessTextArea.js",
+              "ToolTip": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\components\\PreprocessTextArea.js",
+              "RelativeToolTip": "src\\components\\PreprocessTextArea.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-10-31T04:37:10.506Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "DJControls.js",
+              "DocumentMoniker": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\components\\DJControls.js",
+              "RelativeDocumentMoniker": "src\\components\\DJControls.js",
+              "ToolTip": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\components\\DJControls.js",
+              "RelativeToolTip": "src\\components\\DJControls.js",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAAwBYAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-10-31T03:59:41.849Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "index.js",
+              "DocumentMoniker": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\index.js",
+              "RelativeDocumentMoniker": "src\\index.js",
+              "ToolTip": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\index.js",
+              "RelativeToolTip": "src\\index.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-10-31T03:35:09.737Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "EditorHost.js",
+              "DocumentMoniker": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\components\\EditorHost.js",
+              "RelativeDocumentMoniker": "src\\components\\EditorHost.js",
+              "ToolTip": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\components\\EditorHost.js",
+              "RelativeToolTip": "src\\components\\EditorHost.js",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-10-31T05:11:43.136Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
               "Title": "PianoRoll.js",
               "DocumentMoniker": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\components\\PianoRoll.js",
               "RelativeDocumentMoniker": "src\\components\\PianoRoll.js",
@@ -219,7 +275,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 15,
               "Title": "PlayButtons.js",
               "DocumentMoniker": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\components\\PlayButtons.js",
               "RelativeDocumentMoniker": "src\\components\\PlayButtons.js",
@@ -231,7 +287,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 16,
               "Title": "editorStore.js",
               "DocumentMoniker": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\lib\\editorStore.js",
               "RelativeDocumentMoniker": "src\\lib\\editorStore.js",
@@ -243,19 +299,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "index.js",
-              "DocumentMoniker": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\index.js",
-              "RelativeDocumentMoniker": "src\\index.js",
-              "ToolTip": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\index.js",
-              "RelativeToolTip": "src\\index.js",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAUAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-10-31T03:35:09.737Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 17,
               "Title": "console-monkey-patch.js",
               "DocumentMoniker": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\console-monkey-patch.js",
               "RelativeDocumentMoniker": "src\\console-monkey-patch.js",
@@ -264,30 +308,6 @@
               "ViewState": "AgIAABoAAAAAAAAAAAAAwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2025-10-31T05:03:01.586Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "reportWebVitals.js",
-              "DocumentMoniker": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\reportWebVitals.js",
-              "RelativeDocumentMoniker": "src\\reportWebVitals.js",
-              "ToolTip": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\reportWebVitals.js",
-              "RelativeToolTip": "src\\reportWebVitals.js",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-10-31T05:03:05.201Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "setupTests.js",
-              "DocumentMoniker": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\setupTests.js",
-              "RelativeDocumentMoniker": "src\\setupTests.js",
-              "ToolTip": "C:\\Users\\HP\\OneDrive\\Desktop\\Web Tech\\React_A1\\src\\setupTests.js",
-              "RelativeToolTip": "src\\setupTests.js",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-10-31T05:03:06.864Z"
             }
           ]
         },
