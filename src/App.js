@@ -44,6 +44,31 @@ export default function StrudelDemo() {
         setCpmText(onlyDigits);
     };
 
+    const preprocessBody = (raw, cpm, vol) =>
+        (raw ?? "")
+            .replace(/\{\{CPM\}\}/g, String(cpm))
+            .replace(/\{\{VOLUME\}\}/g, String(vol))
+            .replace(/\r/g, "")
+            .trim();
+
+    const runPreprocess = () => {
+        const n = parseInt(cpmText, 10);
+        const cpm = Number.isFinite(n) && n > 0 ? n : 120;
+
+        const newBody = preprocessBody(body, cpm, volume);
+        setBody(newBody);
+
+        const ed = getEditor();
+        if (ed) {
+            ed.setCode(makeTune(cpm, volume, newBody)); 
+        }
+    };
+
+    const runProcAndPlay = () => {
+        runPreprocess();
+        getEditor()?.evaluate();
+    };
+
     const [toggles, setToggles] = useState({ D1: true, D2: true, S1: true });
     const onToggle = (k, v) => setToggles(t => ({ ...t, [k]: v }));
 
@@ -123,7 +148,8 @@ export default function StrudelDemo() {
                                 <div className="card-header">Transport</div>
                                 <div className="card-body d-grid gap-2">
                                     <PlayButtons onPlay={handlePlay} onStop={handleStop} />
-                                    <ProcButtons onProc={() => { }} onProcPlay={() => { }} />
+                                    <ProcButtons onProc={runPreprocess}
+                                        onProcPlay={runProcAndPlay} />
                                 </div>
                             </nav>
 
