@@ -1,4 +1,5 @@
-﻿import './App.css';
+﻿import 'bootstrap/dist/css/bootstrap.min.css';
+import './App.css';
 import { useEffect, useRef, useState, useMemo } from "react";
 import { StrudelMirror } from '@strudel/codemirror';
 import { evalScope } from '@strudel/core';
@@ -109,41 +110,70 @@ export default function StrudelDemo() {
 
     return (
         <div data-bs-theme="dark" className="min-vh-100 bg-body">
-            <h2 className="app-title text-center">Strudel</h2>
-            <main>
-
-                <div className="container-fluid">
-                    <div className="row gy-2">
-                        <div className="col-md-8" style={{ maxHeight: '50vh', overflowY: 'auto' }}>
-                            <PreprocessTextArea value={body} onChange={setBody} />
-                        </div>
-                        <div className="col-md-4">
-
-                            <nav>
-                                <ProcButtons onProc={() => { /* TODO: preprocess */ }}
-                                    onProcPlay={() => { /* TODO: preprocess + play */ }} />
-                                <br />
-                                <PlayButtons onPlay={handlePlay} onStop={handleStop} />
+            <header className="app-bar d-flex align-items-center justify-content-between">
+                <h1 className="brand m-0">Strudel</h1>
+                <span className="badge-soft">live coding</span>
+            </header>
+            <main className="container-fluid py-2">
+                <div className="row gx-3 gy-3">
+                   
+                    <aside className="col-lg-4">
+                        <div className="sticky-lg">
+                            <nav className="panel mb-3">
+                                <div className="card-header">Transport</div>
+                                <div className="card-body d-grid gap-2">
+                                    <PlayButtons onPlay={handlePlay} onStop={handleStop} />
+                                    <ProcButtons onProc={() => { }} onProcPlay={() => { }} />
+                                </div>
                             </nav>
-                            <MixerPanel
-                                cpmText={cpmText}
-                                onCpmText={handleCpmInput}
-                                volume={volume} onVolume={setVolume}
-                                toggles={toggles} onToggle={onToggle}
-                            />
+
+                            <div className="panel mb-3">
+                                <div className="card-header">Mixer</div>
+                                <div className="card-body">
+                                    <MixerPanel
+                                        cpmText={cpmText}
+                                        onCpmText={handleCpmInput}
+                                        volume={volume}
+                                        onVolume={setVolume}
+                                        toggles={toggles}
+                                        onToggle={onToggle}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="panel">
+                                <div className="card-header">DJ Controls</div>
+                                <div className="card-body">
+                                    <DJControls />
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div className="row gy-2">
-                        <div className="col-md-8" style={{ maxHeight: '50vh', overflowY: 'auto' }}>
-                            <EditorHost/>
+                    </aside>
+
+                    <section className="col-lg-8">
+                        <div className="panel mb-3">
+                            <div className="card-header">Text to preprocess</div>
+                            <div className="card-body">
+                                <PreprocessTextArea value={body} onChange={setBody} />
+                            </div>
                         </div>
-                        <div className="col-md-4">
-                            <DJControls />
+
+                        <div className="panel mb-3">
+                            <div className="card-header">Editor</div>
+                            <div className="card-body editor-pane">
+                                <EditorHost />
+                            </div>
                         </div>
-                    </div>
+
+                        <div className="panel">
+                            <div className="card-header">Piano Roll</div>
+                            <div className="card-body p-2">
+                                <PianoRoll />
+                            </div>
+                        </div>
+                    </section>
                 </div>
-                <PianoRoll/>
-            </main >
+            </main>
         </div >
     );  
 }

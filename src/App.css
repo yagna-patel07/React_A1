@@ -1,38 +1,227 @@
-.App {
-  text-align: center;
+/* ============
+   Dark theme for Strudel
+   ============ */
+:root {
+    --bg: #0b1220;
+    --panel: #0f172a;
+    --panel-2: #0b1320;
+    --text: #e5e7eb;
+    --muted: #94a3b8;
+    --line: rgba(148,163,184,.18);
+    --primary: #60a5fa;
+    --primary-600: #3b82f6;
+    --danger: #ef4444;
+    --shadow: 0 8px 30px rgba(0,0,0,.35);
+    --radius: 14px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+html, body, #root {
+    height: 100%
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+body {
+    background: var(--bg);
+    color: var(--text);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.app-title {
+    margin: 12px auto 10px;
+    text-align: center;
+    font-weight: 800;
+    letter-spacing: .4px;
+    font-size: clamp(1.4rem,1.1rem + 1vw,2.1rem);
+    color: #e2e8f0;
+    text-shadow: 0 1px 0 rgba(0,0,0,.35);
 }
 
-.App-link {
-  color: #61dafb;
+/* Panels / cards */
+.panel, .card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.panel {
+    padding: 12px;
+    margin-bottom: 10px;
+}
+
+    .panel .card-header {
+        background: var(--panel-2);
+        border-bottom: 1px solid var(--line);
+        color: #cbd5e1;
+        padding: 10px 12px;
+    }
+
+    .panel .card-body {
+        padding: 10px 12px;
+    }
+
+.row.gy-2 {
+    --bs-gutter-y: .5rem;
+}
+
+.container-fluid > .row + .row {
+    margin-top: .5rem;
+}
+
+/* Inputs */
+.form-label {
+    margin-bottom: .25rem;
+    color: #cbd5e1;
+}
+
+.form-control, .form-select {
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+}
+
+    .form-control:focus, .form-select:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(96,165,250,.25);
+    }
+
+.input-group-text {
+    background: var(--panel-2);
+    color: #cbd5e1;
+    border: 1px solid var(--line);
+}
+
+/* Buttons */
+.btn-primary {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+    .btn-primary:hover {
+        background: var(--primary-600);
+        border-color: var(--primary-600);
+    }
+
+.btn-outline-primary {
+    color: var(--primary);
+    border-color: var(--primary);
+}
+
+    .btn-outline-primary:hover {
+        background: var(--primary);
+        color: var(--bg);
+    }
+
+.btn-danger {
+    background: var(--danger);
+    border-color: var(--danger);
+}
+
+/* Sliders */
+.form-range {
+    accent-color: var(--primary);
+}
+
+    .form-range::-webkit-slider-runnable-track {
+        background: rgba(255,255,255,.12);
+    }
+
+    .form-range::-webkit-slider-thumb {
+        background: var(--primary);
+        border: 1px solid rgba(255,255,255,.35);
+    }
+
+/* Textarea (preprocess) */
+textarea.form-control {
+    min-height: 34vh;
+    margin-bottom: 0;
+    resize: vertical;
+}
+
+/* Editor area */
+.editor-pane {
+    height: 38vh;
+    overflow: auto;
+    padding: .5rem;
+}
+
+/* CodeMirror */
+.cm-editor {
+    background: #0a0f1a;
+    color: var(--text);
+    border-radius: 12px;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+    margin: 0;
+}
+
+.cm-scroller {
+    font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+}
+
+/* Mixer / instruments */
+.mixer-title {
+    font-weight: 700;
+    color: #e2e8f0;
+    margin-bottom: .25rem;
+}
+
+.muted {
+    color: var(--muted);
+}
+
+.instrument-list {
+    list-style: none;
+    margin: 8px 0 0;
+    padding: 0;
+}
+
+    .instrument-list li {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 6px 8px;
+        border-radius: 10px;
+        border: 1px solid transparent;
+    }
+
+        .instrument-list li:hover {
+            background: rgba(148,163,184,.08);
+            border-color: var(--line);
+        }
+
+    .instrument-list input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--primary);
+    }
+
+/* Piano roll */
+#roll {
+    width: 100%;
+    height: 180px;
+    display: block;
+    background: #0b121f;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+}
+
+/* Helpers */
+.text-muted {
+    color: var(--muted) !important;
+}
+
+.badge-soft {
+    background: rgba(96,165,250,.15);
+    color: #cfe3ff;
+    border: 1px solid rgba(96,165,250,.25);
+    padding: .15rem .45rem;
+    border-radius: 999px;
+    font-size: .75rem;
+}
+
+/* Mobile: full-width buttons in nav */
+@media (max-width: 992px) {
+    nav .btn {
+        width: 100%;
+        margin-bottom: .35rem;
+    }
 }
