@@ -22,27 +22,36 @@ import { makeTune, stripSetcps } from './lib/cpm';
 import { setEditor, getEditor } from './lib/editorStore';
 //import { handleD3Data, SetupButtons, Proc, ProcAndPlay } from './lib/handlers';
 
+import FXPanel from './components/FXPanel';
+import KitSelect from './components/KitSelect';
+import PresetBar from './components/PresetBar';
+import AlertToast from './components/AlertToast';
+import useHotkeys from './hooks/useHotkeys';
+
+
 export default function StrudelDemo() {
 
     const hasRun = useRef(false);
 
     // --- state ---
     const initialCpm = 120;
-    const [cpmText, setCpmText] = useState(String(initialCpm));  
-    const [volume, setVolume] = useState(1); 
+    const [cpmText, setCpmText] = useState(String(initialCpm));
+    const [volume, setVolume] = useState(1);
     const [body, setBody] = useState(() => stripSetcps(stranger_tune));
 
-    const songText = useMemo(() => {
-        const n = parseInt(cpmText, 10);
-        const cpm = Number.isFinite(n) && n > 0 ? n : 120;
-        return makeTune(cpm, volume, body);    
-    }, [cpmText, volume, body]);
+    const [kit, setKit] = useState("");
+    const [fx, setFx] = useState({
+        reverb: false, reverbAmt: 0.4,
+        delay: false, delayAmt: 0.25,
+        lpf: false, lpfCut: 6000
+    });
 
-    // CPM input change 
-    const handleCpmInput = (raw) => {
-        const onlyDigits = raw.replace(/[^\d]/g, ''); 
-        setCpmText(onlyDigits);
-    };
+    // p1 ON/HUSH mode
+    const [p1Mode, setP1Mode] = useState("on");
+
+    // simple presets + toasts
+    const [presets, setPresets] = useState([]);
+    const [toast, setToast] = useState(null);
 
     const preprocessBody = (raw, cpm, vol) =>
         (raw ?? "")
@@ -50,6 +59,53 @@ export default function StrudelDemo() {
             .replace(/\{\{VOLUME\}\}/g, String(vol))
             .replace(/\r/g, "")
             .trim();
+
+    const applyKit = (raw, kitValue) =>
+        (raw ?? "").replace(/\{\{KIT\}\}/g, kitValue || "RolandTR808");
+
+    // build the tune text sent to Strudel
+    const hushBody = (raw) =>
+        // Any token like D1, S3, H10, etc becomes "_"
+        (raw ?? "").replace(/^( *)(drums2?)\s*:/gm, '$1_$2:');
+
+    const songText = useMemo(() => {
+        const n = parseInt(cpmText, 10);
+        const cpm = Number.isFinite(n) && n > 0 ? n : 120;
+
+        const pre = preprocessBody(body, cpm, volume);
+        const withKit = applyKit(pre, kit);
+        const cleanedBody = stripSetcps(withKit);
+        const finalBody = p1Mode === "hush" ? hushBody(cleanedBody) : cleanedBody;
+
+        return makeTune(cpm, volume, finalBody, fx, kit);
+    }, [cpmText, volume, body, fx, kit, p1Mode]);
+
+    const savePreset = () => {
+        const p = { cpm: cpmText, volume, kit, fx, body };
+        setPresets(prev => [p, ...prev].slice(0, 8));
+        setToast({ variant: 'success', msg: 'Preset saved' });
+    };
+
+    const loadPreset = (p) => {
+        setCpmText(String(p.cpm));
+        setVolume(p.volume);
+        setKit(p.kit);
+        setFx(p.fx);
+        setBody(p.body);
+        setToast({ variant: 'info', msg: 'Preset loaded' });
+    };
+
+    useHotkeys({
+        ' ': (e) => { e.preventDefault(); (getEditor()?.repl?.state?.started ? handleStop() : handlePlay()); },
+        'ctrl+s': (e) => { e.preventDefault(); savePreset(); }
+    });
+
+
+    // CPM input change 
+    const handleCpmInput = (raw) => {
+        const onlyDigits = raw.replace(/[^\d]/g, '');
+        setCpmText(onlyDigits);
+    };
 
     const runPreprocess = () => {
         const n = parseInt(cpmText, 10);
@@ -60,7 +116,7 @@ export default function StrudelDemo() {
 
         const ed = getEditor();
         if (ed) {
-            ed.setCode(makeTune(cpm, volume, newBody)); 
+            ed.setCode(makeTune(cpm, volume, newBody, fx, kit));
         }
     };
 
@@ -69,16 +125,17 @@ export default function StrudelDemo() {
         getEditor()?.evaluate();
     };
 
-    const [toggles, setToggles] = useState({ D1: true, D2: true, S1: true });
-    const onToggle = (k, v) => setToggles(t => ({ ...t, [k]: v }));
-
     const handlePlay = () => getEditor()?.evaluate();
     const handleStop = () => getEditor()?.stop();
+
+    const handleP1ModeChange = (mode) => {
+        setP1Mode(mode);
+    };
 
     useEffect(() => {
         if (hasRun.current) return;
         hasRun.current = true;
-  
+
         console_monkey_patch();
         //Code copied from example: https://codeberg.org/uzu/strudel/src/branch/main/examples/codemirror-repl
         //init canvas
@@ -116,7 +173,7 @@ export default function StrudelDemo() {
         if (!ed)
             return;
 
-        if (cpmText === '') {           
+        if (cpmText === '') {
             ed.stop();
             return;
         }
@@ -127,11 +184,16 @@ export default function StrudelDemo() {
             return;
         }
 
-        const updated = makeTune(n,volume, body);
+        const pre = preprocessBody(body, n, volume);
+        const withKit = applyKit(pre, kit);
+        const cleanedBody = stripSetcps(withKit);
+        const finalBody = p1Mode === "hush" ? hushBody(cleanedBody) : cleanedBody;
+
+        const updated = makeTune(n, volume, finalBody, fx, kit);
         ed.setCode(updated);
 
         if (ed.repl?.state?.started) ed.evaluate();
-    }, [cpmText,volume, body]);
+    }, [cpmText, volume, body, fx, kit, p1Mode]);
 
     return (
         <div data-bs-theme="dark" className="min-vh-100 bg-body">
@@ -141,7 +203,7 @@ export default function StrudelDemo() {
             </header>
             <main className="container-fluid py-2">
                 <div className="row gx-3 gy-3">
-                   
+
                     <aside className="col-lg-4">
                         <div className="sticky-lg">
                             <nav className="panel mb-3">
@@ -161,8 +223,6 @@ export default function StrudelDemo() {
                                         onCpmText={handleCpmInput}
                                         volume={volume}
                                         onVolume={setVolume}
-                                        toggles={toggles}
-                                        onToggle={onToggle}
                                     />
                                 </div>
                             </div>
@@ -170,9 +230,82 @@ export default function StrudelDemo() {
                             <div className="panel">
                                 <div className="card-header">DJ Controls</div>
                                 <div className="card-body">
-                                    <DJControls />
+                                    <DJControls
+                                        mode={p1Mode}
+                                        onModeChange={handleP1ModeChange} />
                                 </div>
                             </div>
+
+                            {/* Drum kit chooser */}
+                            <div className="panel mb-3">
+                                <div className="card-header">Kit</div>
+                                <div className="card-body">
+                                    <KitSelect
+                                        kit={kit}
+                                        onKit={setKit} />
+                                </div>
+                            </div>
+
+                            {/* FX controls */}
+                            <div className="panel mb-3">
+                                <div className="card-header">FX</div>
+                                <div className="card-body">
+                                    <FXPanel value={fx} onChange={setFx} />
+                                </div>
+                            </div>
+
+                            {/* Presets (save + list) */}
+                            <div className="panel mb-3">
+                                <div className="card-header">Presets</div>
+                                <div className="card-body">
+                                    <PresetBar
+                                        stateForSave={{ cpmText, volume, kit, fx, body }}
+                                        onLoadJson={(p) => {
+                                            setCpmText(String(p.cpmText ?? 120));
+                                            setVolume(Number(p.volume ?? 1));
+                                            setKit(p.kit ?? "");
+                                            setFx(p.fx ?? { reverb: false, reverbAmt: 0.4, delay: false, delayAmt: 0.25, lpf: false, lpfCut: 6000 });
+                                            setBody(p.body ?? "");
+
+                                            // refresh editor immediately
+                                            const n = parseInt(p.cpmText ?? 120, 10);
+                                            const cpm = Number.isFinite(n) && n > 0 ? n : 120;
+                                            const ed = getEditor();
+                                            if (ed) {
+                                                ed.setCode(makeTune(cpm, p.volume ?? 1, p.body ?? "", p.fx ?? fx, p.kit ?? ""));
+                                                if (ed.repl?.state?.started) ed.evaluate();
+                                            }
+                                        }}
+                                        onReset={() => {
+                                            const defaultsFx = { reverb: false, reverbAmt: 0.4, delay: false, delayAmt: 0.25, lpf: false, lpfCut: 6000 };
+                                            const defaultCpm = 120, defaultVol = 1, defaultBody = stripSetcps(stranger_tune);
+
+                                            setCpmText(String(defaultCpm));
+                                            setVolume(defaultVol);
+                                            setKit("");
+                                            setFx(defaultsFx);
+                                            setBody(defaultBody);
+                                            setP1Mode("on");
+
+                                            const ed = getEditor();
+                                            if (ed) {
+                                                ed.setCode(makeTune(defaultCpm, defaultVol, defaultBody, defaultsFx, ""));
+                                                if (ed.repl?.state?.started) ed.evaluate();
+                                            }
+                                        }}
+                                    />
+                                </div>
+                            </div>
+
+
+                            <AlertToast
+                                show={!!toast}
+                                variant={toast?.variant || 'info'}
+                                onClose={() => setToast(null)}
+                            >
+                                {toast?.msg}
+                            </AlertToast>
+
                         </div>
                     </aside>
 
@@ -201,5 +334,5 @@ export default function StrudelDemo() {
                 </div>
             </main>
         </div >
-    );  
+    );
 }
