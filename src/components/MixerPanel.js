@@ -1,6 +1,6 @@
 import { Card, Form, InputGroup } from "react-bootstrap";
 
-export default function MixerPanel({ cpmText, onCpmText, volume, onVolume, toggles, onToggle}) {
+export default function MixerPanel({ cpmText, onCpmText, volume, onVolume}) {
     return (
         <Card className="panel">
             <Card.Body>
@@ -30,24 +30,6 @@ export default function MixerPanel({ cpmText, onCpmText, volume, onVolume, toggl
                         onChange={(e) => onVolume(Number(e.target.value))}
                         className="form-range"
                     />
-
-                    <Form.Label>Instruments</Form.Label>
-                    <div className="d-flex flex-column gap-1">
-                        {[
-                            { k: 'D1', label: 'D1 (Drums 1)' },
-                            { k: 'D2', label: 'D2 (Drums 2)' },
-                            { k: 'S1', label: 'S1 (Sample 1)' },
-                        ].map(({ k, label }) => (
-                            <Form.Check
-                                key={k}
-                                id={`mix-${k}`}
-                                type="checkbox"
-                                label={label}
-                                checked={!!toggles[k]}
-                                onChange={(e) => onToggle(k, e.target.checked)}
-                            />
-                        ))}
-                    </div>
                 </Form>
             </Card.Body>
         </Card>
