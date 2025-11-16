@@ -1,59 +1,110 @@
-
 :root {
-    --bg: #0b1220;
-    --panel: #0f172a;
-    --panel-2: #0b1320;
+    --bg: #020617;
+    --panel: rgba(15, 23, 42, 0.62); 
+    --panel-2: rgba(15, 23, 42, 0.82); 
     --text: #e5e7eb;
     --muted: #94a3b8;
-    --line: rgba(148,163,184,.18);
+    --line: rgba(148, 163, 184, 0.24);
     --primary: #60a5fa;
     --primary-600: #3b82f6;
     --danger: #ef4444;
-    --shadow: 0 8px 30px rgba(0,0,0,.35);
-    --radius: 14px;
+    --shadow: 0 22px 45px rgba(0, 0, 0, 0.7);
+    --radius: 18px;
 }
 
-html, body, #root {
-    height: 100%
+
+html,
+body,
+#root {
+    height: 100%;
 }
 
+/* ==== Background & shell ==== */
 body {
-    background: var(--bg);
+    margin: 0;
     color: var(--text);
+    /* DJ image with a much lighter overlay */
+    background: linear-gradient( 135deg, rgba(15, 23, 42, 0.45), rgba(15, 23, 42, 0.25) ), url("./dj-bg.webp") center/cover fixed no-repeat;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-.app-title {
-    margin: 12px auto 10px;
-    text-align: center;
-    font-weight: 800;
-    letter-spacing: .4px;
-    font-size: clamp(1.4rem,1.1rem + 1vw,2.1rem);
-    color: #e2e8f0;
-    text-shadow: 0 1px 0 rgba(0,0,0,.35);
+/* main wrapper: <div class="min-vh-100 bg-body"> from App.js */
+.bg-body {
+    min-height: 100vh;
+    padding: 14px 0 28px;
+    /* much more transparent so the image shows through */
+    background: rgba(15, 23, 42, 0.28);
+    backdrop-filter: blur(16px) saturate(1.2);
 }
 
-/* Panels / cards */
-.panel, .card {
-    background: var(--panel);
-    border: 1px solid var(--line);
+/* ==== Top app bar ==== */
+.app-bar {
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient( 90deg, rgba(236, 72, 153, 0.55), rgba(37, 99, 235, 0.45), rgba(14, 165, 233, 0.35) );
+    border-bottom: 1px solid rgba(148,163,184,0.65);
+    box-shadow: 0 22px 60px rgba(0,0,0,.9);
+    backdrop-filter: blur(18px) saturate(150%);
+}
+
+    .app-bar .brand {
+        font-size: clamp(1.4rem, 1.1rem + 1vw, 2rem);
+        font-weight: 800;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: #f9fafb;
+        text-shadow: 0 2px 10px rgba(15, 23, 42, 0.95);
+    }
+
+.badge-soft {
+    background: rgba(15, 23, 42, 0.35);
+    color: #e0f2fe;
+    border: 1px solid rgba(191, 219, 254, 0.7);
+    padding: 0.15rem 0.6rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+/* ==== Panels / cards ==== */
+.panel,
+.card {
+    /* more transparent so you see the DJ deck behind */
+    background: rgba(15, 23, 42, 0.30);
     border-radius: var(--radius);
-    box-shadow: var(--shadow);
+    border: 1px solid rgba(148,163,184,0.45);
+    box-shadow: 0 14px 45px rgba(0,0,0,.75), 0 0 20px rgba(56, 189, 248, 0.16);
+    overflow: hidden;
+    backdrop-filter: blur(24px) saturate(140%);
+    transition: box-shadow 0.18s ease, transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
 }
 
 .panel {
-    padding: 12px;
-    margin-bottom: 10px;
+    padding: 0;
+    margin-bottom: 14px;
 }
 
     .panel .card-header {
-        background: var(--panel-2);
-        border-bottom: 1px solid var(--line);
-        color: #cbd5e1;
-        padding: 10px 12px;
+        background: linear-gradient( 90deg, rgba(15, 23, 42, 0.92), rgba(37, 99, 235, 0.42) );
+        border-bottom: 1px solid rgba(148,163,184,0.55);
+        color: #e2e8f0;
+        padding: 10px 14px;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        font-size: 0.78rem;
     }
 
     .panel .card-body {
-        padding: 10px 12px;
+        padding: 12px 16px;
+    }
+
+    /* hover pop */
+    .panel:hover {
+        background: rgba(15, 23, 42, 0.38);
+        border-color: rgba(96, 165, 250, 0.9);
+        box-shadow: 0 20px 60px rgba(0,0,0,.9), 0 0 28px rgba(96, 165, 250, 0.4);
+        transform: translateY(-2px);
     }
 
 .row.gy-2 {
@@ -64,34 +115,42 @@ body {
     margin-top: .5rem;
 }
 
-/* Inputs */
+/* ==== Inputs ==== */
 .form-label {
     margin-bottom: .25rem;
     color: #cbd5e1;
 }
 
-.form-control, .form-select {
-    background: var(--bg);
+.form-control,
+.form-select {
+    background: rgba(15, 23, 42, 0.85);
     color: var(--text);
     border: 1px solid var(--line);
     border-radius: 10px;
 }
 
-    .form-control:focus, .form-select:focus {
+    .form-control::placeholder {
+        color: rgba(148,163,184,0.8);
+    }
+
+    .form-control:focus,
+    .form-select:focus {
         border-color: var(--primary);
-        box-shadow: 0 0 0 3px rgba(96,165,250,.25);
+        box-shadow: 0 0 0 3px rgba(96,165,250,.35);
+        background: rgba(15, 23, 42, 0.98);
     }
 
 .input-group-text {
-    background: var(--panel-2);
+    background: rgba(15, 23, 42, 0.9);
     color: #cbd5e1;
     border: 1px solid var(--line);
 }
 
-/* Buttons */
+/* ==== Buttons ==== */
 .btn-primary {
     background: var(--primary);
     border-color: var(--primary);
+    box-shadow: 0 8px 20px rgba(37,99,235,0.5);
 }
 
     .btn-primary:hover {
@@ -102,6 +161,7 @@ body {
 .btn-outline-primary {
     color: var(--primary);
     border-color: var(--primary);
+    background: rgba(15,23,42,0.9);
 }
 
     .btn-outline-primary:hover {
@@ -114,13 +174,13 @@ body {
     border-color: var(--danger);
 }
 
-/* Sliders */
+/* ==== Sliders ==== */
 .form-range {
     accent-color: var(--primary);
 }
 
     .form-range::-webkit-slider-runnable-track {
-        background: rgba(255,255,255,.12);
+        background: rgba(148,163,184,.25);
     }
 
     .form-range::-webkit-slider-thumb {
@@ -128,34 +188,34 @@ body {
         border: 1px solid rgba(255,255,255,.35);
     }
 
-/* Textarea (preprocess) */
+/* ==== Textarea (preprocess) ==== */
 textarea.form-control {
     min-height: 34vh;
     margin-bottom: 0;
     resize: vertical;
 }
 
-/* Editor area */
+/* ==== Editor area ==== */
 .editor-pane {
     height: 38vh;
     overflow: auto;
     padding: .5rem;
 }
 
-/* CodeMirror */
+/* ==== CodeMirror ==== */
 .cm-editor {
-    background: #0a0f1a;
+    background: rgba(2, 6, 23, 0.9);
     color: var(--text);
     border-radius: 12px;
-    box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+    box-shadow: inset 0 0 0 1px rgba(148,163,184,0.35), 0 18px 40px rgba(0,0,0,.9);
     margin: 0;
 }
 
 .cm-scroller {
-    font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
-/* Mixer / instruments */
+/* ==== Mixer / instruments ==== */
 .mixer-title {
     font-weight: 700;
     color: #e2e8f0;
@@ -179,11 +239,12 @@ textarea.form-control {
         padding: 6px 8px;
         border-radius: 10px;
         border: 1px solid transparent;
+        transition: background 0.15s ease, border-color 0.15s ease;
     }
 
         .instrument-list li:hover {
-            background: rgba(148,163,184,.08);
-            border-color: var(--line);
+            background: rgba(30,64,175,0.3);
+            border-color: rgba(129,140,248,0.8);
         }
 
     .instrument-list input[type="checkbox"] {
@@ -192,28 +253,19 @@ textarea.form-control {
         accent-color: var(--primary);
     }
 
-/* Piano roll */
+/* ==== Piano roll ==== */
 #roll {
     width: 100%;
     height: 180px;
     display: block;
-    background: #0b121f;
+    background: rgba(15,23,42,0.82);
     border: 1px solid var(--line);
     border-radius: var(--radius);
 }
 
-/* Helpers */
+/* ==== Helpers ==== */
 .text-muted {
     color: var(--muted) !important;
-}
-
-.badge-soft {
-    background: rgba(96,165,250,.15);
-    color: #cfe3ff;
-    border: 1px solid rgba(96,165,250,.25);
-    padding: .15rem .45rem;
-    border-radius: 999px;
-    font-size: .75rem;
 }
 
 /* Mobile: full-width buttons in nav */
@@ -221,5 +273,9 @@ textarea.form-control {
     nav .btn {
         width: 100%;
         margin-bottom: .35rem;
+    }
+
+    .app-bar {
+        padding-inline: 1rem;
     }
 }
