@@ -11,16 +11,15 @@ import { registerSoundfonts } from '@strudel/soundfonts';
 import console_monkey_patch from './console-monkey-patch';
 
 import DJControls from './components/DJControls';
-import PlayButtons from './components/PlayButtons'; 
+import PlayButtons from './components/PlayButtons';
 import ProcButtons from './components/ProcButtons';
 import PreprocessTextArea from './components/PreprocessTextArea';
 import EditorHost from './components/EditorHost';
-import PianoRoll from './components/PianoRoll'
+import PianoRoll from './components/PianoRoll';
 import MixerPanel from './components/MixerPanel';
 import { stranger_tune } from './tunes';
 import { makeTune, stripSetcps } from './lib/cpm';
 import { setEditor, getEditor } from './lib/editorStore';
-//import { handleD3Data, SetupButtons, Proc, ProcAndPlay } from './lib/handlers';
 
 import FXPanel from './components/FXPanel';
 import KitSelect from './components/KitSelect';
@@ -28,12 +27,40 @@ import PresetBar from './components/PresetBar';
 import AlertToast from './components/AlertToast';
 import useHotkeys from './hooks/useHotkeys';
 
+/* ---------- Helper functions for preprocessing + tune building ---------- */
+
+// Replace {{CPM}} and {{VOLUME}} placeholders in the raw tune body.
+const preprocessBody = (raw, cpm, vol) =>
+    (raw ?? "")
+        .replace(/\{\{CPM\}\}/g, String(cpm))
+        .replace(/\{\{VOLUME\}\}/g, String(vol))
+        .replace(/\r/g, "")
+        .trim();
+
+// Insert the selected drum kit wherever {{KIT}} appears.
+// Falls back to RolandTR808 if no kit is selected.
+const applyKit = (raw, kitValue) =>
+    (raw ?? "").replace(/\{\{KIT\}\}/g, kitValue || "RolandTR808");
+
+// When p1 is in HUSH mode, mute drums / drums2 tracks by prefixing them with "_".
+const hushBody = (raw) =>
+    (raw ?? "").replace(/^( *)(drums2?)\s*:/gm, '$1_$2:');
+
+// Build the final Strudel body we send into makeTune,
+// applying CPM/VOLUME placeholders, kit selection, setcps stripping and HUSH.
+function buildSongBody(rawBody, { cpm, volume, kit, p1Mode }) {
+    const pre = preprocessBody(rawBody, cpm, volume);
+    const withKit = applyKit(pre, kit);
+    const cleaned = stripSetcps(withKit);
+    return p1Mode === "hush" ? hushBody(cleaned) : cleaned;
+}
+
+/* ------------------------------------------------------------------------ */
 
 export default function StrudelDemo() {
-
     const hasRun = useRef(false);
 
-    // --- state ---
+    // --- top-level state owned by the parent component ---
     const initialCpm = 120;
     const [cpmText, setCpmText] = useState(String(initialCpm));
     const [volume, setVolume] = useState(1);
@@ -46,70 +73,55 @@ export default function StrudelDemo() {
         lpf: false, lpfCut: 6000
     });
 
-    // p1 ON/HUSH mode
+    // p1 ON/HUSH toggle
     const [p1Mode, setP1Mode] = useState("on");
 
-    // simple presets + toasts
-    const [presets, setPresets] = useState([]);
+    // toast feedback for presets / actions
     const [toast, setToast] = useState(null);
 
-    const preprocessBody = (raw, cpm, vol) =>
-        (raw ?? "")
-            .replace(/\{\{CPM\}\}/g, String(cpm))
-            .replace(/\{\{VOLUME\}\}/g, String(vol))
-            .replace(/\r/g, "")
-            .trim();
-
-    const applyKit = (raw, kitValue) =>
-        (raw ?? "").replace(/\{\{KIT\}\}/g, kitValue || "RolandTR808");
-
-    // build the tune text sent to Strudel
-    const hushBody = (raw) =>
-        // Any token like D1, S3, H10, etc becomes "_"
-        (raw ?? "").replace(/^( *)(drums2?)\s*:/gm, '$1_$2:');
-
+    // ----- Derive final tune text that goes into Strudel -----
     const songText = useMemo(() => {
         const n = parseInt(cpmText, 10);
-        const cpm = Number.isFinite(n) && n > 0 ? n : 120;
+        const cpm = Number.isFinite(n) && n > 0 ? n : initialCpm;
 
-        const pre = preprocessBody(body, cpm, volume);
-        const withKit = applyKit(pre, kit);
-        const cleanedBody = stripSetcps(withKit);
-        const finalBody = p1Mode === "hush" ? hushBody(cleanedBody) : cleanedBody;
-
+        const finalBody = buildSongBody(body, { cpm, volume, kit, p1Mode });
         return makeTune(cpm, volume, finalBody, fx, kit);
     }, [cpmText, volume, body, fx, kit, p1Mode]);
 
-    const savePreset = () => {
-        const p = { cpm: cpmText, volume, kit, fx, body };
-        setPresets(prev => [p, ...prev].slice(0, 8));
-        setToast({ variant: 'success', msg: 'Preset saved' });
-    };
-
-    const loadPreset = (p) => {
-        setCpmText(String(p.cpm));
-        setVolume(p.volume);
-        setKit(p.kit);
-        setFx(p.fx);
-        setBody(p.body);
-        setToast({ variant: 'info', msg: 'Preset loaded' });
-    };
-
+    // Global keyboard shortcuts:
+    // - Space: play / stop
+    // - S: stop
+    // - ArrowUp/Down: adjust master volume
     useHotkeys({
-        ' ': (e) => { e.preventDefault(); (getEditor()?.repl?.state?.started ? handleStop() : handlePlay()); },
-        'ctrl+s': (e) => { e.preventDefault(); savePreset(); }
+        onPlay: () => {
+            const ed = getEditor();
+            if (!ed) return;
+            if (ed.repl?.state?.started) {
+                ed.stop();
+            } else {
+                ed.evaluate();
+            }
+        },
+        onStop: () => getEditor()?.stop(),
+        onVol: (delta) => {
+            setVolume(prev => {
+                const next = prev + delta;
+                return Math.max(0, Math.min(1, next)); // clamp 0–1
+            });
+        }
     });
 
-
-    // CPM input change 
+    // CPM text input: keep only digits for safety.
     const handleCpmInput = (raw) => {
         const onlyDigits = raw.replace(/[^\d]/g, '');
         setCpmText(onlyDigits);
     };
 
+    // Preprocess just the text area body (CPM/VOLUME placeholders),
+    // update state, and push the new tune into the editor.
     const runPreprocess = () => {
         const n = parseInt(cpmText, 10);
-        const cpm = Number.isFinite(n) && n > 0 ? n : 120;
+        const cpm = Number.isFinite(n) && n > 0 ? n : initialCpm;
 
         const newBody = preprocessBody(body, cpm, volume);
         setBody(newBody);
@@ -132,27 +144,31 @@ export default function StrudelDemo() {
         setP1Mode(mode);
     };
 
+    // ----- One-time Strudel initialisation + piano roll drawing -----
     useEffect(() => {
         if (hasRun.current) return;
         hasRun.current = true;
 
         console_monkey_patch();
-        //Code copied from example: https://codeberg.org/uzu/strudel/src/branch/main/examples/codemirror-repl
-        //init canvas
+
         const canvas = document.getElementById('roll');
         canvas.width = canvas.width * 2;
         canvas.height = canvas.height * 2;
         const drawContext = canvas.getContext('2d');
         const drawTime = [-2, 2]; // time window of drawn haps
+
         const editor = new StrudelMirror({
             defaultOutput: webaudioOutput,
             getTime: () => getAudioContext().currentTime,
             transpiler,
             root: document.getElementById('editor'),
             drawTime,
-            onDraw: (haps, time) => drawPianoroll({ haps, time, ctx: drawContext, drawTime, fold: 0 }),
+            onDraw: (haps, time) =>
+                drawPianoroll({ haps, time, ctx: drawContext, drawTime, fold: 0 }),
             prebake: async () => {
-                initAudioOnFirstClick(); // needed to make the browser happy (don't await this here..)
+                // Needed so browsers allow audio to start after a user click.
+                initAudioOnFirstClick();
+
                 const loadModules = evalScope(
                     import('@strudel/core'),
                     import('@strudel/draw'),
@@ -168,10 +184,11 @@ export default function StrudelDemo() {
         editor.setCode(songText);
     }, [songText]);
 
+    // Whenever CPM / volume / body / FX / kit / p1Mode changes,
+    // rebuild the tune text and hot-reload it into Strudel.
     useEffect(() => {
         const ed = getEditor();
-        if (!ed)
-            return;
+        if (!ed) return;
 
         if (cpmText === '') {
             ed.stop();
@@ -184,11 +201,7 @@ export default function StrudelDemo() {
             return;
         }
 
-        const pre = preprocessBody(body, n, volume);
-        const withKit = applyKit(pre, kit);
-        const cleanedBody = stripSetcps(withKit);
-        const finalBody = p1Mode === "hush" ? hushBody(cleanedBody) : cleanedBody;
-
+        const finalBody = buildSongBody(body, { cpm: n, volume, kit, p1Mode });
         const updated = makeTune(n, volume, finalBody, fx, kit);
         ed.setCode(updated);
 
@@ -201,17 +214,20 @@ export default function StrudelDemo() {
                 <h1 className="brand m-0">Strudel</h1>
                 <span className="badge-soft">live coding</span>
             </header>
+
             <main className="container-fluid py-2">
                 <div className="row gx-3 gy-3">
-
+                    {/* Left column: transport, mixer, DJ controls, kit, FX, presets */}
                     <aside className="col-lg-4">
                         <div className="sticky-lg">
                             <nav className="panel mb-3">
                                 <div className="card-header">Transport</div>
                                 <div className="card-body d-grid gap-2">
                                     <PlayButtons onPlay={handlePlay} onStop={handleStop} />
-                                    <ProcButtons onProc={runPreprocess}
-                                        onProcPlay={runProcAndPlay} />
+                                    <ProcButtons
+                                        onProc={runPreprocess}
+                                        onProcPlay={runProcAndPlay}
+                                    />
                                 </div>
                             </nav>
 
@@ -232,7 +248,8 @@ export default function StrudelDemo() {
                                 <div className="card-body">
                                     <DJControls
                                         mode={p1Mode}
-                                        onModeChange={handleP1ModeChange} />
+                                        onModeChange={handleP1ModeChange}
+                                    />
                                 </div>
                             </div>
 
@@ -242,7 +259,8 @@ export default function StrudelDemo() {
                                 <div className="card-body">
                                     <KitSelect
                                         kit={kit}
-                                        onKit={setKit} />
+                                        onKit={setKit}
+                                    />
                                 </div>
                             </div>
 
@@ -254,42 +272,78 @@ export default function StrudelDemo() {
                                 </div>
                             </div>
 
-                            {/* Presets (save + list) */}
+                            {/* Presets (save + load + reset via JSON file) */}
                             <div className="panel mb-3">
                                 <div className="card-header">Presets</div>
                                 <div className="card-body">
                                     <PresetBar
                                         stateForSave={{ cpmText, volume, kit, fx, body }}
                                         onLoadJson={(p) => {
-                                            setCpmText(String(p.cpmText ?? 120));
+                                            const defaultsFx = {
+                                                reverb: false,
+                                                reverbAmt: 0.4,
+                                                delay: false,
+                                                delayAmt: 0.25,
+                                                lpf: false,
+                                                lpfCut: 6000
+                                            };
+
+                                            setCpmText(String(p.cpmText ?? initialCpm));
                                             setVolume(Number(p.volume ?? 1));
                                             setKit(p.kit ?? "");
-                                            setFx(p.fx ?? { reverb: false, reverbAmt: 0.4, delay: false, delayAmt: 0.25, lpf: false, lpfCut: 6000 });
+                                            setFx(p.fx ?? defaultsFx);
                                             setBody(p.body ?? "");
 
-                                            // refresh editor immediately
-                                            const n = parseInt(p.cpmText ?? 120, 10);
-                                            const cpm = Number.isFinite(n) && n > 0 ? n : 120;
+                                            // Refresh editor immediately with loaded values.
+                                            const n = parseInt(p.cpmText ?? initialCpm, 10);
+                                            const cpm = Number.isFinite(n) && n > 0 ? n : initialCpm;
                                             const ed = getEditor();
                                             if (ed) {
-                                                ed.setCode(makeTune(cpm, p.volume ?? 1, p.body ?? "", p.fx ?? fx, p.kit ?? ""));
+                                                const finalBody = buildSongBody(
+                                                    p.body ?? "",
+                                                    {
+                                                        cpm,
+                                                        volume: p.volume ?? 1,
+                                                        kit: p.kit ?? "",
+                                                        p1Mode
+                                                    }
+                                                );
+                                                ed.setCode(makeTune(cpm, p.volume ?? 1, finalBody, p.fx ?? defaultsFx, p.kit ?? ""));
                                                 if (ed.repl?.state?.started) ed.evaluate();
                                             }
                                         }}
                                         onReset={() => {
-                                            const defaultsFx = { reverb: false, reverbAmt: 0.4, delay: false, delayAmt: 0.25, lpf: false, lpfCut: 6000 };
-                                            const defaultCpm = 120, defaultVol = 1, defaultBody = stripSetcps(stranger_tune);
+                                            const defaultsFx = {
+                                                reverb: false,
+                                                reverbAmt: 0.4,
+                                                delay: false,
+                                                delayAmt: 0.25,
+                                                lpf: false,
+                                                lpfCut: 6000
+                                            };
+                                            const defaultCpm = initialCpm;
+                                            const defaultVol = 1;
+                                            const defaultBody = stripSetcps(stranger_tune);
 
                                             setCpmText(String(defaultCpm));
                                             setVolume(defaultVol);
                                             setKit("");
                                             setFx(defaultsFx);
                                             setBody(defaultBody);
-                                            setP1Mode("on");
+                                            setP1Mode("on"); // Reset p1 to ON
 
                                             const ed = getEditor();
                                             if (ed) {
-                                                ed.setCode(makeTune(defaultCpm, defaultVol, defaultBody, defaultsFx, ""));
+                                                const finalBody = buildSongBody(
+                                                    defaultBody,
+                                                    {
+                                                        cpm: defaultCpm,
+                                                        volume: defaultVol,
+                                                        kit: "",
+                                                        p1Mode: "on"
+                                                    }
+                                                );
+                                                ed.setCode(makeTune(defaultCpm, defaultVol, finalBody, defaultsFx, ""));
                                                 if (ed.repl?.state?.started) ed.evaluate();
                                             }
                                         }}
@@ -297,18 +351,15 @@ export default function StrudelDemo() {
                                 </div>
                             </div>
 
-
                             <AlertToast
                                 show={!!toast}
-                                variant={toast?.variant || 'info'}
-                                onClose={() => setToast(null)}
-                            >
-                                {toast?.msg}
-                            </AlertToast>
-
+                                onHide={() => setToast(null)}
+                                message={toast?.msg || ""}
+                            />
                         </div>
                     </aside>
 
+                    {/* Right column: text area, editor, and piano roll */}
                     <section className="col-lg-8">
                         <div className="panel mb-3">
                             <div className="card-header">Text to preprocess</div>
@@ -333,6 +384,6 @@ export default function StrudelDemo() {
                     </section>
                 </div>
             </main>
-        </div >
+        </div>
     );
 }
