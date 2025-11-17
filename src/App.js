@@ -1,39 +1,40 @@
-﻿import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css';
+﻿import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
 import { useEffect, useRef, useState, useMemo } from "react";
-import { StrudelMirror } from '@strudel/codemirror';
-import { evalScope } from '@strudel/core';
-import { drawPianoroll } from '@strudel/draw';
-import { initAudioOnFirstClick } from '@strudel/webaudio';
-import { transpiler } from '@strudel/transpiler';
-import { getAudioContext, webaudioOutput, registerSynthSounds } from '@strudel/webaudio';
-import { registerSoundfonts } from '@strudel/soundfonts';
-import console_monkey_patch from './console-monkey-patch';
+import { StrudelMirror } from "@strudel/codemirror";
+import { evalScope } from "@strudel/core";
+import { drawPianoroll } from "@strudel/draw";
+import { initAudioOnFirstClick } from "@strudel/webaudio";
+import { transpiler } from "@strudel/transpiler";
+import {
+    getAudioContext,
+    webaudioOutput,
+    registerSynthSounds
+} from "@strudel/webaudio";
+import { registerSoundfonts } from "@strudel/soundfonts";
+import console_monkey_patch from "./console-monkey-patch";
 
-import DJControls from './components/DJControls';
-import PlayButtons from './components/PlayButtons'; 
-import ProcButtons from './components/ProcButtons';
-import PreprocessTextArea from './components/PreprocessTextArea';
-import EditorHost from './components/EditorHost';
-import PianoRoll from './components/PianoRoll'
-import MixerPanel from './components/MixerPanel';
-import { stranger_tune } from './tunes';
-import { makeTune, stripSetcps } from './lib/cpm';
-import { setEditor, getEditor } from './lib/editorStore';
-//import { handleD3Data, SetupButtons, Proc, ProcAndPlay } from './lib/handlers';
-
-import FXPanel from './components/FXPanel';
-import KitSelect from './components/KitSelect';
-import PresetBar from './components/PresetBar';
-import AlertToast from './components/AlertToast';
-import useHotkeys from './hooks/useHotkeys';
-
+import DJControls from "./components/DJControls";
+import PlayButtons from "./components/PlayButtons";
+import ProcButtons from "./components/ProcButtons";
+import PreprocessTextArea from "./components/PreprocessTextArea";
+import EditorHost from "./components/EditorHost";
+import PianoRoll from "./components/PianoRoll";
+import MixerPanel from "./components/MixerPanel";
+import { stranger_tune } from "./tunes";
+import { makeTune, stripSetcps } from "./lib/cpm";
+import { setEditor, getEditor } from "./lib/editorStore";
+import FXPanel from "./components/FXPanel";
+import KitSelect from "./components/KitSelect";
+import PresetBar from "./components/PresetBar";
+import AlertToast from "./components/AlertToast";
+import useHotkeys from "./hooks/useHotkeys";
+import D3LogGraph from "./components/D3LogGraph";
 
 export default function StrudelDemo() {
-
     const hasRun = useRef(false);
 
-    // --- state ---
+    // ===== Top-level state (single parent component) =====
     const initialCpm = 120;
     const [cpmText, setCpmText] = useState(String(initialCpm));
     const [volume, setVolume] = useState(1);
@@ -41,18 +42,29 @@ export default function StrudelDemo() {
 
     const [kit, setKit] = useState("");
     const [fx, setFx] = useState({
-        reverb: false, reverbAmt: 0.4,
-        delay: false, delayAmt: 0.25,
-        lpf: false, lpfCut: 6000
+        reverb: false,
+        reverbAmt: 0.4,
+        delay: false,
+        delayAmt: 0.25,
+        lpf: false,
+        lpfCut: 6000
     });
 
-    // p1 ON/HUSH mode
+    // p1 ON / HUSH toggle
     const [p1Mode, setP1Mode] = useState("on");
 
-    // simple presets + toasts
-    const [presets, setPresets] = useState([]);
+    // Simple toast text for JSON actions
     const [toast, setToast] = useState(null);
 
+    // Whether Strudel is currently playing (for the visualiser)
+    const [isPlaying, setIsPlaying] = useState(false);
+
+    // Live data for D3 visualiser – last 100 “energy” samples
+    const [graphPoints, setGraphPoints] = useState([]);
+
+    // ===== Helper functions for preprocessing and tune building =====
+
+    // Replace CPM/VOLUME placeholders and normalise line endings
     const preprocessBody = (raw, cpm, vol) =>
         (raw ?? "")
             .replace(/\{\{CPM\}\}/g, String(cpm))
@@ -60,14 +72,15 @@ export default function StrudelDemo() {
             .replace(/\r/g, "")
             .trim();
 
+    // Inject selected drum kit into the tune text
     const applyKit = (raw, kitValue) =>
         (raw ?? "").replace(/\{\{KIT\}\}/g, kitValue || "RolandTR808");
 
-    // build the tune text sent to Strudel
+    // HUSH mode – mute drum blocks
     const hushBody = (raw) =>
-        // Any token like D1, S3, H10, etc becomes "_"
-        (raw ?? "").replace(/^( *)(drums2?)\s*:/gm, '$1_$2:');
+        (raw ?? "").replace(/^( *)(drums2?)\s*:/gm, "$1_$2:");
 
+    // Build the final Strudel code string sent to the editor
     const songText = useMemo(() => {
         const n = parseInt(cpmText, 10);
         const cpm = Number.isFinite(n) && n > 0 ? n : 120;
@@ -80,33 +93,13 @@ export default function StrudelDemo() {
         return makeTune(cpm, volume, finalBody, fx, kit);
     }, [cpmText, volume, body, fx, kit, p1Mode]);
 
-    const savePreset = () => {
-        const p = { cpm: cpmText, volume, kit, fx, body };
-        setPresets(prev => [p, ...prev].slice(0, 8));
-        setToast({ variant: 'success', msg: 'Preset saved' });
-    };
-
-    const loadPreset = (p) => {
-        setCpmText(String(p.cpm));
-        setVolume(p.volume);
-        setKit(p.kit);
-        setFx(p.fx);
-        setBody(p.body);
-        setToast({ variant: 'info', msg: 'Preset loaded' });
-    };
-
-    useHotkeys({
-        ' ': (e) => { e.preventDefault(); (getEditor()?.repl?.state?.started ? handleStop() : handlePlay()); },
-        'ctrl+s': (e) => { e.preventDefault(); savePreset(); }
-    });
-
-
-    // CPM input change 
+    // ===== CPM input =====
     const handleCpmInput = (raw) => {
-        const onlyDigits = raw.replace(/[^\d]/g, '');
+        const onlyDigits = raw.replace(/[^\d]/g, "");
         setCpmText(onlyDigits);
     };
 
+    // ===== Preprocess & transport =====
     const runPreprocess = () => {
         const n = parseInt(cpmText, 10);
         const cpm = Number.isFinite(n) && n > 0 ? n : 120;
@@ -123,44 +116,76 @@ export default function StrudelDemo() {
     const runProcAndPlay = () => {
         runPreprocess();
         getEditor()?.evaluate();
+        setIsPlaying(true);
     };
 
-    const handlePlay = () => getEditor()?.evaluate();
-    const handleStop = () => getEditor()?.stop();
-
-    const handleP1ModeChange = (mode) => {
-        setP1Mode(mode);
+    const handlePlay = () => {
+        const ed = getEditor();
+        if (!ed) return;
+        ed.evaluate();
+        setIsPlaying(true);
     };
 
+    const handleStop = () => {
+        const ed = getEditor();
+        if (!ed) return;
+        ed.stop();
+        setIsPlaying(false);
+    };
+
+    const handleP1ModeChange = (mode) => setP1Mode(mode);
+
+    // ===== Keyboard shortcuts (space, S, arrows) =====
+    useHotkeys({
+        onPlay: () => {
+            const ed = getEditor();
+            if (ed?.repl?.state?.started) {
+                handleStop();
+            } else {
+                handlePlay();
+            }
+        },
+        onStop: handleStop,
+        onVol: (delta) => {
+            setVolume((v) => Math.max(0, Math.min(1, v + delta)));
+        }
+    });
+
+    // ===== One-time Strudel + editor setup =====
     useEffect(() => {
         if (hasRun.current) return;
         hasRun.current = true;
 
         console_monkey_patch();
-        //Code copied from example: https://codeberg.org/uzu/strudel/src/branch/main/examples/codemirror-repl
-        //init canvas
-        const canvas = document.getElementById('roll');
+
+        const canvas = document.getElementById("roll");
         canvas.width = canvas.width * 2;
         canvas.height = canvas.height * 2;
-        const drawContext = canvas.getContext('2d');
-        const drawTime = [-2, 2]; // time window of drawn haps
+        const drawContext = canvas.getContext("2d");
+        const drawTime = [-2, 2];
+
         const editor = new StrudelMirror({
             defaultOutput: webaudioOutput,
             getTime: () => getAudioContext().currentTime,
             transpiler,
-            root: document.getElementById('editor'),
+            root: document.getElementById("editor"),
             drawTime,
-            onDraw: (haps, time) => drawPianoroll({ haps, time, ctx: drawContext, drawTime, fold: 0 }),
+            onDraw: (haps, time) =>
+                drawPianoroll({ haps, time, ctx: drawContext, drawTime, fold: 0 }),
             prebake: async () => {
-                initAudioOnFirstClick(); // needed to make the browser happy (don't await this here..)
+                initAudioOnFirstClick();
                 const loadModules = evalScope(
-                    import('@strudel/core'),
-                    import('@strudel/draw'),
-                    import('@strudel/mini'),
-                    import('@strudel/tonal'),
-                    import('@strudel/webaudio'),
+                    import("@strudel/core"),
+                    import("@strudel/draw"),
+                    import("@strudel/mini"),
+                    import("@strudel/tonal"),
+                    import("@strudel/webaudio")
                 );
-                await Promise.all([loadModules, registerSynthSounds(), registerSoundfonts()]);
+                await Promise.all([
+                    loadModules,
+                    registerSynthSounds(),
+                    registerSoundfonts()
+                ]);
             }
         });
 
@@ -168,12 +193,12 @@ export default function StrudelDemo() {
         editor.setCode(songText);
     }, [songText]);
 
+    // ===== Keep editor in sync when controls change =====
     useEffect(() => {
         const ed = getEditor();
-        if (!ed)
-            return;
+        if (!ed) return;
 
-        if (cpmText === '') {
+        if (cpmText === "") {
             ed.stop();
             return;
         }
@@ -195,23 +220,44 @@ export default function StrudelDemo() {
         if (ed.repl?.state?.started) ed.evaluate();
     }, [cpmText, volume, body, fx, kit, p1Mode]);
 
+    // ===== Live D3 visualiser data =====
+    useEffect(() => {
+        if (!isPlaying) return;
+
+        // While playing, push a fake “energy” value every 200 ms.
+        const id = setInterval(() => {
+            setGraphPoints((prev) => {
+                const nextVal = volume * 0.8 + Math.random() * 0.2;
+                const next = [...prev, nextVal];
+                if (next.length > 100) next.shift();
+                return next;
+            });
+        }, 200);
+
+        return () => clearInterval(id);
+    }, [isPlaying, volume]);
+
+    // ===== Render =====
     return (
         <div data-bs-theme="dark" className="min-vh-100 bg-body">
             <header className="app-bar d-flex align-items-center justify-content-between">
-                <h1 className="brand m-0">Strudel</h1>
+                <h1 className="brand m-0">STRUDEL</h1>
                 <span className="badge-soft">live coding</span>
             </header>
+
             <main className="container-fluid py-2">
                 <div className="row gx-3 gy-3">
-
+                    {/* Left column – controls */}
                     <aside className="col-lg-4">
                         <div className="sticky-lg">
                             <nav className="panel mb-3">
                                 <div className="card-header">Transport</div>
                                 <div className="card-body d-grid gap-2">
                                     <PlayButtons onPlay={handlePlay} onStop={handleStop} />
-                                    <ProcButtons onProc={runPreprocess}
-                                        onProcPlay={runProcAndPlay} />
+                                    <ProcButtons
+                                        onProc={runPreprocess}
+                                        onProcPlay={runProcAndPlay}
+                                    />
                                 </div>
                             </nav>
 
@@ -227,26 +273,23 @@ export default function StrudelDemo() {
                                 </div>
                             </div>
 
-                            <div className="panel">
+                            <div className="panel mb-3">
                                 <div className="card-header">DJ Controls</div>
                                 <div className="card-body">
                                     <DJControls
                                         mode={p1Mode}
-                                        onModeChange={handleP1ModeChange} />
+                                        onModeChange={handleP1ModeChange}
+                                    />
                                 </div>
                             </div>
 
-                            {/* Drum kit chooser */}
                             <div className="panel mb-3">
                                 <div className="card-header">Kit</div>
                                 <div className="card-body">
-                                    <KitSelect
-                                        kit={kit}
-                                        onKit={setKit} />
+                                    <KitSelect kit={kit} onKit={setKit} />
                                 </div>
                             </div>
 
-                            {/* FX controls */}
                             <div className="panel mb-3">
                                 <div className="card-header">FX</div>
                                 <div className="card-body">
@@ -254,7 +297,7 @@ export default function StrudelDemo() {
                                 </div>
                             </div>
 
-                            {/* Presets (save + list) */}
+                            {/* JSON preset save / load */}
                             <div className="panel mb-3">
                                 <div className="card-header">Presets</div>
                                 <div className="card-body">
@@ -264,21 +307,49 @@ export default function StrudelDemo() {
                                             setCpmText(String(p.cpmText ?? 120));
                                             setVolume(Number(p.volume ?? 1));
                                             setKit(p.kit ?? "");
-                                            setFx(p.fx ?? { reverb: false, reverbAmt: 0.4, delay: false, delayAmt: 0.25, lpf: false, lpfCut: 6000 });
+                                            setFx(
+                                                p.fx ?? {
+                                                    reverb: false,
+                                                    reverbAmt: 0.4,
+                                                    delay: false,
+                                                    delayAmt: 0.25,
+                                                    lpf: false,
+                                                    lpfCut: 6000
+                                                }
+                                            );
                                             setBody(p.body ?? "");
 
-                                            // refresh editor immediately
                                             const n = parseInt(p.cpmText ?? 120, 10);
-                                            const cpm = Number.isFinite(n) && n > 0 ? n : 120;
+                                            const cpm =
+                                                Number.isFinite(n) && n > 0 ? n : 120;
                                             const ed = getEditor();
                                             if (ed) {
-                                                ed.setCode(makeTune(cpm, p.volume ?? 1, p.body ?? "", p.fx ?? fx, p.kit ?? ""));
+                                                ed.setCode(
+                                                    makeTune(
+                                                        cpm,
+                                                        p.volume ?? 1,
+                                                        p.body ?? "",
+                                                        p.fx ?? fx,
+                                                        p.kit ?? ""
+                                                    )
+                                                );
                                                 if (ed.repl?.state?.started) ed.evaluate();
                                             }
+
+                                            setToast("Preset loaded");
                                         }}
                                         onReset={() => {
-                                            const defaultsFx = { reverb: false, reverbAmt: 0.4, delay: false, delayAmt: 0.25, lpf: false, lpfCut: 6000 };
-                                            const defaultCpm = 120, defaultVol = 1, defaultBody = stripSetcps(stranger_tune);
+                                            const defaultsFx = {
+                                                reverb: false,
+                                                reverbAmt: 0.4,
+                                                delay: false,
+                                                delayAmt: 0.25,
+                                                lpf: false,
+                                                lpfCut: 6000
+                                            };
+                                            const defaultCpm = 120;
+                                            const defaultVol = 1;
+                                            const defaultBody = stripSetcps(stranger_tune);
 
                                             setCpmText(String(defaultCpm));
                                             setVolume(defaultVol);
@@ -289,26 +360,33 @@ export default function StrudelDemo() {
 
                                             const ed = getEditor();
                                             if (ed) {
-                                                ed.setCode(makeTune(defaultCpm, defaultVol, defaultBody, defaultsFx, ""));
+                                                ed.setCode(
+                                                    makeTune(
+                                                        defaultCpm,
+                                                        defaultVol,
+                                                        defaultBody,
+                                                        defaultsFx,
+                                                        ""
+                                                    )
+                                                );
                                                 if (ed.repl?.state?.started) ed.evaluate();
                                             }
+
+                                            setToast("Settings reset");
                                         }}
                                     />
                                 </div>
                             </div>
 
-
                             <AlertToast
                                 show={!!toast}
-                                variant={toast?.variant || 'info'}
-                                onClose={() => setToast(null)}
-                            >
-                                {toast?.msg}
-                            </AlertToast>
-
+                                onHide={() => setToast(null)}
+                                message={toast || ""}
+                            />
                         </div>
                     </aside>
 
+                    {/* Right column – text, editor, D3 and piano roll */}
                     <section className="col-lg-8">
                         <div className="panel mb-3">
                             <div className="card-header">Text to preprocess</div>
@@ -324,6 +402,13 @@ export default function StrudelDemo() {
                             </div>
                         </div>
 
+                        <div className="panel mb-3">
+                            <div className="card-header">Log Graph (D3)</div>
+                            <div className="card-body">
+                                <D3LogGraph values={graphPoints} />
+                            </div>
+                        </div>
+
                         <div className="panel">
                             <div className="card-header">Piano Roll</div>
                             <div className="card-body p-2">
@@ -333,6 +418,6 @@ export default function StrudelDemo() {
                     </section>
                 </div>
             </main>
-        </div >
+        </div>
     );
 }
