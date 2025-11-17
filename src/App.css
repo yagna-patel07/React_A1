@@ -279,3 +279,14 @@ textarea.form-control {
         padding-inline: 1rem;
     }
 }
+
+/* === D3 visualiser panel === */
+.d3-visualiser-svg {
+    width: 100%;
+    height: 180px;
+    display: block;
+    border-radius: 16px;
+    background: radial-gradient( circle at top, rgba(59, 130, 246, 0.25), rgba(15, 23, 42, 0.96) );
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    box-shadow: 0 12px 40px rgba(15, 23, 42, 0.9), 0 0 25px rgba(56, 189, 248, 0.45);
+}

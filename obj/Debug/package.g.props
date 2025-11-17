@@ -17,6 +17,7 @@
     <PackageJsonDependenciesTestingLibraryReact Condition="$(PackageJsonDependenciesTestingLibraryReact) == ''">^16.3.0</PackageJsonDependenciesTestingLibraryReact>
     <PackageJsonDependenciesTestingLibraryUserEvent Condition="$(PackageJsonDependenciesTestingLibraryUserEvent) == ''">^13.5.0</PackageJsonDependenciesTestingLibraryUserEvent>
     <PackageJsonDependenciesBootstrap Condition="$(PackageJsonDependenciesBootstrap) == ''">^5.3.8</PackageJsonDependenciesBootstrap>
+    <PackageJsonDependenciesD3 Condition="$(PackageJsonDependenciesD3) == ''">^7.9.0</PackageJsonDependenciesD3>
     <PackageJsonDependenciesReact Condition="$(PackageJsonDependenciesReact) == ''">^19.1.1</PackageJsonDependenciesReact>
     <PackageJsonDependenciesReactBootstrap Condition="$(PackageJsonDependenciesReactBootstrap) == ''">^2.10.10</PackageJsonDependenciesReactBootstrap>
     <PackageJsonDependenciesReactDom Condition="$(PackageJsonDependenciesReactDom) == ''">^19.1.1</PackageJsonDependenciesReactDom>
