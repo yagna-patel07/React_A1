@@ -1,7 +1,9 @@
 import { Toast, ToastContainer } from "react-bootstrap";
 
+// Small helper component to show a temporary alert message in the bottom-right
 export default function AlertToast({ show, onHide, message = "Something happened" }) {
     return (
+        // Bootstrap container that positions the toast
         <ToastContainer position="bottom-end" className="p-3">
             <Toast bg="danger" onClose={onHide} show={show} delay={2200} autohide>
                 <Toast.Header closeButton={false}><strong className="me-auto">Alert</strong></Toast.Header>

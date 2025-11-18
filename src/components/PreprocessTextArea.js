@@ -1,4 +1,6 @@
 import { Card, Form } from 'react-bootstrap';
+
+// Text area for the "Text to preprocess" input
 function PreprocessTextArea({ value, onChange }) {
     return (
         <Card className="panel">

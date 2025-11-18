@@ -2,17 +2,21 @@
 import { useEffect, useRef } from "react";
 import * as d3 from "d3";
 
+// D3-based visualiser for a rolling array of numeric values
 export default function D3LogGraph({ values = [] }) {
+    // Draw directly into this SVG element with D3
     const svgRef = useRef(null);
 
     useEffect(() => {
         const svg = d3.select(svgRef.current);
         if (!svg.node()) return;
 
+        // Work out current SVG size
         const width = svg.node().clientWidth || 500;
         const height = svg.node().clientHeight || 180;
 
-        svg.selectAll("*").remove(); // clear previous frame
+        // Reset the SVG each time values change
+        svg.selectAll("*").remove(); // clear previous frame    
         svg.attr("viewBox", `0 0 ${width} ${height}`);
 
         const margin = { top: 10, right: 10, bottom: 16, left: 10 };
@@ -23,16 +27,18 @@ export default function D3LogGraph({ values = [] }) {
             .append("g")
             .attr("transform", `translate(${margin.left},${margin.top})`);
 
-        // Normalise data
+        // Use a safe fallback array so D3 never sees an empty dataset
         const safeValues = values.length ? values : [0];
         const maxVal = d3.max(safeValues) || 1;
 
+        // X scale – one band per value
         const x = d3
             .scaleBand()
             .domain(safeValues.map((_, i) => i))
             .range([0, innerW])
             .padding(0.15);
 
+        // Y scale – 0 at bottom, max at top
         const y = d3
             .scaleLinear()
             .domain([0, maxVal])
@@ -125,5 +131,6 @@ export default function D3LogGraph({ values = [] }) {
             .attr("stroke-width", 0.5);
     }, [values]);
 
+    // SVG element that D3 draws into
     return <svg ref={svgRef} className="d3-visualiser-svg" />;
 }

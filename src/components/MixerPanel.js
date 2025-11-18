@@ -1,12 +1,15 @@
 import { Card, Form, InputGroup } from "react-bootstrap";
 
+// Mixer panel: controls CPM (speed) and master volume
 export default function MixerPanel({ cpmText, onCpmText, volume, onVolume}) {
     return (
         <Card className="panel">
             <Card.Body>
                 <Card.Title>Mixer</Card.Title>
 
+                {/* Wrap inputs in a form but prevent any submit refresh */}
                 <Form onSubmit={(e) => e.preventDefault()}>
+                    {/* CPM input with a small prefix label */}
                     <Form.Label>Cycles per minute (CPM)</Form.Label>
                     <InputGroup className="mb-3">
                         <InputGroup.Text>CPM</InputGroup.Text>
@@ -21,6 +24,7 @@ export default function MixerPanel({ cpmText, onCpmText, volume, onVolume}) {
                         />
                     </InputGroup>
 
+                    {/* Master volume slider, shows current value */}
                     <Form.Label>Master Volume: {volume.toFixed(2)}</Form.Label>
                     <Form.Range
                         min={0}

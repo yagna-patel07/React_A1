@@ -1,8 +1,11 @@
 import { Card, Form } from 'react-bootstrap';
+
+// DJ control panel for toggling p1 mode (ON / HUSH)
 function DJControls({ mode, onModeChange }) {
     return (
         <Card className="panel mt-3">
             <Card.Body>
+                {/* Radio buttons share the same "p1" group so only one can be active */}
                 <Form>
                     <Form.Check
                         type="radio"
